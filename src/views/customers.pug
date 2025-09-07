@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  .container.mt-5
+    .card.shadow-lg
+      .card-header.d-flex.justify-content-center.align-items-center
+        h1.h1.mb-0 Customers
+
+      .card-body
+        if customers.length
+          table.table.table-striped.table-hover.align-middle
+            thead.table-dark
+              tr
+                th(scope="col") #
+                th(scope="col") First Name
+                th(scope="col") Last Name
+                th(scope="col") 
+            tbody
+              each customer, i in customers
+                tr
+                  th(scope="row") #{i + 1}
+                  td= customer.first_name
+                  td= customer.last_name
+                  td
+                    form(directive="delete", action=`/customers/${customer.id}?_method=DELETE`, method="POST", style="display:inline")
+                      button.btn.btn-sm.btn-danger(type="submit")
+                        i.bi.bi-trash.me-1
+                        | Delete
+        else
+          .alert.alert-warning.text-center No customers found.
