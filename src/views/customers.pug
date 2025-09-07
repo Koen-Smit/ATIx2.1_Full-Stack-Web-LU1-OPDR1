@@ -1,30 +1,54 @@
 extends layout
 
 block content
+  a.btn.btn-secondary.mb-3(href="/")
+    i.bi.bi-arrow-left-circle.me-2
+    | Home
   .container.mt-5
     .card.shadow-lg
-      .card-header.d-flex.justify-content-center.align-items-center
+      .card-header.d-flex.justify-content-between.align-items-center
         h1.h1.mb-0 Customers
+
+        form.d-flex(action="/customers", method="POST")
+          input.form-control.me-2(type="text", name="first_name", placeholder="First name", required)
+          input.form-control.me-2(type="text", name="last_name", placeholder="Last name", required)
+          button.btn.btn-success(type="submit")
+            i.bi.bi-plus-circle.me-1
+            | Add
 
       .card-body
         if customers.length
           table.table.table-striped.table-hover.align-middle
             thead.table-dark
               tr
-                th(scope="col") #
-                th(scope="col") First Name
-                th(scope="col") Last Name
-                th(scope="col") 
+                th #
+                th First Name
+                th Last Name
+                th Actions
             tbody
               each customer, i in customers
                 tr
                   th(scope="row") #{i + 1}
-                  td= customer.first_name
-                  td= customer.last_name
+
+                  form(action=`/customers/${customer.customer_id}/update`, method="POST", class="d-flex gap-2 w-100")
+                    td
+                      input.form-control.form-control-sm(type="text", name="first_name", value=customer.first_name, required)
+                    td
+                      input.form-control.form-control-sm(type="text", name="last_name", value=customer.last_name, required)
+                    td
+                      button.btn.btn-sm.btn-warning(type="submit" title="Update")
+                        i.bi.bi-pencil-square
                   td
-                    form(directive="delete", action=`/customers/${customer.id}?_method=DELETE`, method="POST", style="display:inline")
-                      button.btn.btn-sm.btn-danger(type="submit")
-                        i.bi.bi-trash.me-1
-                        | Delete
+                    form(action=`/customers/${customer.customer_id}/delete`, method="POST", style="display:inline")
+                      button.btn.btn-sm.btn-danger(type="submit" title="Delete")
+                        i.bi.bi-trash
         else
           .alert.alert-warning.text-center No customers found.
+
+  if query.delete_error
+    .position-fixed.top-0.start-50.translate-middle-x.mt-3(style="z-index: 1100")
+      .toast.show(role="alert" aria-live="assertive" aria-atomic="true")
+        .toast-header
+          strong.me-auto.text-danger Error
+          button.btn-close.ms-2.mb-1(type="button" data-bs-dismiss="toast" aria-label="Close")
+        .toast-body Cannot delete this customer because they have other related information.

@@ -1,5 +1,13 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  .container.mt-5
+    .row.justify-content-center
+      .col-md-8
+        .card.shadow-lg
+          .card-body.text-center
+            h1.display-4.mb-3= title
+
+            a.btn.btn-primary.btn-lg(href="/customers")
+              i.bi.bi-people-fill.me-2
+              | Customers
