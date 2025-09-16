@@ -141,3 +141,4 @@ vite.config.ts.timestamp-*
 
 src/db/sql/connection.js
 bin
+package-lock.json
