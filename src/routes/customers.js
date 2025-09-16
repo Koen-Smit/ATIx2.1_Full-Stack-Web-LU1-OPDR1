@@ -11,7 +11,7 @@ router.get('/:customerId', customersController.get);
 router.post('/', customersController.create);
 
 // UPDATE
-router.post('/:customerId/update', customersController.update);
+router.post('/:customerId/update', customersController.validate, customersController.update);
 
 // DELETE
 router.post('/:customerId/delete', customersController.delete);

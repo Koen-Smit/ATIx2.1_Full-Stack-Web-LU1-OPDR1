@@ -1,6 +1,13 @@
 const customersService = require('../services/customersService');
 
 const customersController = {
+    validate: (req, res, next) => {
+        const { first_name, last_name } = req.body;
+        if (!first_name || !last_name) {
+            return res.status(400).send('First name and last name are required.');
+        }
+        next();
+    },
     get: (req, res, next) => {
         const customerId = req.params.customerId;
         customersService.get(customerId, (error, customers) => {
