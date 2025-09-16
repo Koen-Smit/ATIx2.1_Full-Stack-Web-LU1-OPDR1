@@ -4,8 +4,64 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css")
-    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous")
   body
+    // Toast container
+    .toast-container.position-fixed.top-0.start-50.translate-middle-x.mt-3(style="z-index: 1100")
+      if errorMessage
+        .toast.show.align-items-center.text-bg-danger.border-0(role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000")
+          .d-flex
+            .toast-body #{errorMessage}
+            button.btn-close.btn-close-white.me-2.m-auto(type="button" data-bs-dismiss="toast" aria-label="Close")
+
     block content
 
-    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous")
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js")
+    
+    script.
+      // Check for error in URL
+      document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const errorParam = urlParams.get('error');
+        
+        if (errorParam) {
+          showToast(decodeURIComponent(errorParam), 'danger');
+          
+          // Clean URL
+          urlParams.delete('error');
+          const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+          window.history.replaceState({}, document.title, newUrl);
+        }
+      });
+
+      // Toast notifications
+      function showToast(message, type = 'danger') {
+        const toastContainer = document.querySelector('.toast-container');
+        
+        const toastElement = document.createElement('div');
+        toastElement.className = `toast align-items-center text-bg-${type} border-0`;
+        toastElement.setAttribute('role', 'alert');
+        toastElement.setAttribute('aria-live', 'assertive');
+        toastElement.setAttribute('aria-atomic', 'true');
+        toastElement.setAttribute('data-bs-autohide', 'true');
+        toastElement.setAttribute('data-bs-delay', '5000');
+        
+        toastElement.innerHTML = `
+          <div class="d-flex">
+            <div class="toast-body">${message}</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+        `;
+        
+        toastContainer.appendChild(toastElement);
+        
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+        
+        // Remove toast
+        toastElement.addEventListener('hidden.bs.toast', function() {
+          toastElement.remove();
+        });
+      }
+
+      // showToast globally available
+      window.showToast = showToast;

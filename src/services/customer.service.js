@@ -1,4 +1,4 @@
-const customersDao = require('../dao/customersDao');
+const customersDao = require('../daos/customer.dao');
 
 const customersService = {
     get: (customerId, callback) => {

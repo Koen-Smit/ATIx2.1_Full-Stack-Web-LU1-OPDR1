@@ -1,4 +1,4 @@
-const connection = require('../db/sql/connection');
+const connection = require('../db/connection');
 const queries = require('../db/query');
 
 const customersDao = {

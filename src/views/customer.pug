@@ -44,11 +44,3 @@ block content
                         i.bi.bi-trash
         else
           .alert.alert-warning.text-center No customers found.
-
-  if query.delete_error
-    .position-fixed.top-0.start-50.translate-middle-x.mt-3(style="z-index: 1100")
-      .toast.show(role="alert" aria-live="assertive" aria-atomic="true")
-        .toast-header
-          strong.me-auto.text-danger Error
-          button.btn-close.ms-2.mb-1(type="button" data-bs-dismiss="toast" aria-label="Close")
-        .toast-body Cannot delete this customer because they have other related information.
