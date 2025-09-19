@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      checks: write # For test reporting
+      checks: write 
 
     steps:
       - uses: actions/checkout@v4
@@ -28,12 +28,12 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Install wait-on for application readiness
         run: npm install wait-on --no-save
@@ -77,12 +77,12 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
           
       - name: Build application (if build script exists)
         run: npm run build --if-present
