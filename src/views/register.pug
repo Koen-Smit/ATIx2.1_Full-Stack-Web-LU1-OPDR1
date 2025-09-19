@@ -1,0 +1,128 @@
+extends layout
+
+block content
+  .container.mt-4
+    .row.justify-content-center
+      .col-md-8.col-lg-6
+        .card.shadow-lg.border-0
+          .card-header.bg-success.text-white.text-center.py-4
+            h2.mb-0
+              i.bi.bi-person-plus.me-2
+              | Registreren
+          .card-body.p-5
+            form(action="/auth/register", method="POST")
+              .row
+                .col-md-6.mb-3
+                  label.form-label(for="first_name") Voornaam
+                  input.form-control(type="text", id="first_name", name="first_name", required, placeholder="Voornaam")
+                
+                .col-md-6.mb-3
+                  label.form-label(for="last_name") Achternaam
+                  input.form-control(type="text", id="last_name", name="last_name", required, placeholder="Achternaam")
+              
+              .mb-3
+                label.form-label(for="email") E-mailadres
+                input.form-control(type="email", id="email", name="email", required, placeholder="jouw@email.com")
+              
+              .mb-3
+                label.form-label(for="username") Gebruikersnaam
+                input.form-control(type="text", id="username", name="username", required, placeholder="Kies een gebruikersnaam")
+              
+              .mb-3
+                label.form-label(for="password") Wachtwoord
+                input.form-control(type="password", id="password", name="password", required, 
+                  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+                  placeholder="Minimaal 8 karakters",
+                  title="Wachtwoord moet minimaal 8 karakters bevatten met ten minste 1 hoofdletter, 1 kleine letter, 1 cijfer en 1 speciaal teken")
+                .form-text 
+                  | Wachtwoord vereisten:
+                  ul.small.mb-0.mt-1
+                    li Minimaal 8 karakters
+                    li Minimaal 1 hoofdletter (A-Z)
+                    li Minimaal 1 kleine letter (a-z)
+                    li Minimaal 1 cijfer (0-9)
+                    li Minimaal 1 speciaal teken (@$!%*?&)
+              
+              .mb-3
+                label.form-label(for="confirm_password") Bevestig wachtwoord
+                input.form-control(type="password", id="confirm_password", name="confirm_password", required, placeholder="Herhaal je wachtwoord")
+              
+              .mb-4
+                label.form-label(for="store_id") Winkel
+                select.form-select(id="store_id", name="store_id", required)
+                  option(value="") Selecteer een winkel...
+                  if stores && stores.length
+                    each store in stores
+                      option(value=store.store_id) #{store.store_id} - #{store.address}
+                  else
+                    option(value="") Geen winkels beschikbaar
+              
+              .d-grid.mb-3
+                button.btn.btn-success.btn-lg(type="submit")
+                  i.bi.bi-person-plus.me-2
+                  | Account aanmaken
+            
+            hr.my-4
+            
+            .text-center
+              p.text-muted.mb-3 Al een account?
+              a.btn.btn-outline-primary(href="/auth/login")
+                i.bi.bi-box-arrow-in-right.me-2
+                | Inloggen
+
+        .text-center.mt-3
+          a.text-muted(href="/")
+            i.bi.bi-arrow-left.me-1
+            | Terug naar home
+
+  script.
+    | document.addEventListener('DOMContentLoaded', function() {
+    |   const passwordField = document.getElementById('password');
+    |   const confirmPasswordField = document.getElementById('confirm_password');
+    |   const form = document.querySelector('form');
+    |   
+    |   passwordField.addEventListener('input', function() {
+    |     const password = this.value;
+    |     const requirements = {
+    |       length: password.length >= 8,
+    |       lowercase: /[a-z]/.test(password),
+    |       uppercase: /[A-Z]/.test(password),
+    |       digit: /\d/.test(password),
+    |       special: /[@$!%*?&]/.test(password)
+    |     };
+    |     
+    |     const formText = this.nextElementSibling;
+    |     const requirements_list = formText.querySelector('ul');
+    |     const items = requirements_list.querySelectorAll('li');
+    |     
+    |     items[0].style.color = requirements.length ? 'green' : '';
+    |     items[1].style.color = requirements.uppercase ? 'green' : '';
+    |     items[2].style.color = requirements.lowercase ? 'green' : '';
+    |     items[3].style.color = requirements.digit ? 'green' : '';
+    |     items[4].style.color = requirements.special ? 'green' : '';
+    |   });
+    |   
+    |   confirmPasswordField.addEventListener('input', function() {
+    |     const password = passwordField.value;
+    |     const confirmPassword = this.value;
+    |     
+    |     if (confirmPassword && password !== confirmPassword) {
+    |       this.setCustomValidity('Wachtwoorden komen niet overeen');
+    |       this.classList.add('is-invalid');
+    |     } else {
+    |       this.setCustomValidity('');
+    |       this.classList.remove('is-invalid');
+    |     }
+    |   });
+    |   
+    |   form.addEventListener('submit', function(e) {
+    |     const password = passwordField.value;
+    |     const confirmPassword = confirmPasswordField.value;
+    |     
+    |     if (password !== confirmPassword) {
+    |       e.preventDefault();
+    |       confirmPasswordField.focus();
+    |       alert('Wachtwoorden komen niet overeen. Controleer je invoer.');
+    |     }
+    |   });
+    | });
