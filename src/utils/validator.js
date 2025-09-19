@@ -31,7 +31,7 @@ function validateData(schema, data, options = { usePattern: false }) {
         const emailRule = originalField.rules?.find(r => r.name === 'email');
         if (emailRule || key.toLowerCase().includes('email')) {
           newField = newField.email().messages({
-            "string.email": `${key} must be a valid email address`,
+            "string.email": `${key} moet een geldig e-mailadres zijn`,
           });
           
           if (originalField.allow && originalField.allow.includes('')) {
@@ -39,7 +39,7 @@ function validateData(schema, data, options = { usePattern: false }) {
           }
         } else {
           newField = newField.pattern(/^[A-Za-z\s'-]+$/).messages({
-            "string.pattern.base": `${key} can only contain letters, spaces, hyphens or apostrophes`,
+            "string.pattern.base": `${key} mag alleen letters, spaties, koppeltekens of apostrofs bevatten`,
           });
         }
         

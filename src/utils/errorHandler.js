@@ -25,7 +25,7 @@ function errorHandler(err, req, res, next) {
       return res.status(404).json({ error: err.message });
     }
     
-    return res.status(404).send(err.message || 'Page not found');
+    return res.status(404).send(err.message || 'Pagina niet gevonden');
   }
 
   // For other errors, get page to redirect back to
@@ -65,7 +65,7 @@ function errorHandler(err, req, res, next) {
     return res.status(err.status || 500).json({ error: err.message });
   }
 
-  res.status(err.status || 500).send(err.message || 'Something went wrong');
+  res.status(err.status || 500).send(err.message || 'Er is iets misgegaan');
 }
 
 module.exports = errorHandler;
