@@ -1,6 +1,4 @@
 const authService = require('../services/auth.service');
-const bcrypt = require('bcrypt');
-const crypto = require('crypto');
 const { validateData, Joi } = require('../utils/validator');
 const logger = require('../utils/logger');
 
@@ -55,8 +53,7 @@ const authController = {
                     return next(err);
                 }
                 
-                const inputHash = crypto.createHash('sha1').update(data.password).digest('hex');
-                const isMatch = inputHash === user.password;
+                const isMatch = authService.verifyPassword(data.password, user.password);
                 
                 if (!isMatch) {
                     const error = new Error('Ongeldig e-mailadres of wachtwoord');
@@ -146,7 +143,7 @@ const authController = {
                         return next(err);
                     }
                     
-                    const hashedPassword = crypto.createHash('sha1').update(data.password).digest('hex'); // 40 chars
+                    const hashedPassword = authService.hashPassword(data.password);
                     
                     logger.info({ label: 'AUTH', message: 'Password hashed successfully', hashLength: hashedPassword.length });
                     
@@ -168,7 +165,6 @@ const authController = {
                         
                         logger.info({ label: 'AUTH', message: 'Registration successful', user_id: result.staff_id, email: data.email });
                         
-                        // Redirect to login with success message
                         res.redirect('/auth/login?success=' + encodeURIComponent('Account succesvol aangemaakt! Je kunt nu inloggen.'));
                     });
                 });

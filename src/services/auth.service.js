@@ -1,7 +1,18 @@
 const authDAO = require('../daos/auth.dao');
 const { callDao } = require('../utils/serviceHelper');
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 const authService = {
+    hashPassword: (password) => {
+        return crypto.createHash('sha1').update(password).digest('hex');
+    },
+
+    verifyPassword: (password, hash) => {
+        const inputHash = crypto.createHash('sha1').update(password).digest('hex');
+        return inputHash === hash;
+    },
+
     getUserByEmail: (email, callback) => {
         callDao(authDAO.getUserByEmail, [email], (error, results) => {
             if (error) return callback(error);

@@ -133,6 +133,15 @@ const authDAO = {
             staffId
         ];
         connection.query(query, values, callback);
+    },
+
+    updatePassword: (staffId, hashedPassword, callback) => {
+        const query = `
+            UPDATE staff 
+            SET password = ?, last_update = NOW()
+            WHERE staff_id = ?
+        `;
+        connection.query(query, [hashedPassword, staffId], callback);
     }
 };
 

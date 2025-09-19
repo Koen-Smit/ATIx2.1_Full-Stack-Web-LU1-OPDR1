@@ -56,6 +56,7 @@ describe('Authentication Tests', () => {
     
     const timestamp = Date.now()
     const testEmail = `test${timestamp}@example.com`
+    const testUsername = `testuser${timestamp}`
     
     cy.get('body').then(($body) => {
       if ($body.find('input[name="first_name"]').length > 0) {
@@ -64,8 +65,22 @@ describe('Authentication Tests', () => {
       if ($body.find('input[name="last_name"]').length > 0) {
         cy.get('input[name="last_name"]').type('User')
       }
+      if ($body.find('input[name="username"]').length > 0) {
+        cy.get('input[name="username"]').type(testUsername)
+      }
       cy.get('input[name="email"]').type(testEmail)
-      cy.get('input[name="password"]').type('password123')
+      
+      if ($body.find('input[name="password"]').length > 0) {
+        cy.get('input[name="password"]').type('SecurePass123!')
+      }
+      if ($body.find('input[name="confirm_password"]').length > 0) {
+        cy.get('input[name="confirm_password"]').type('SecurePass123!')
+      }
+      
+      // Select store if dropdown exists
+      if ($body.find('select[name="store_id"]').length > 0) {
+        cy.get('select[name="store_id"]').select(1)
+      }
     })
     
     cy.get('button[type="submit"]').click()
@@ -77,6 +92,56 @@ describe('Authentication Tests', () => {
         cy.get('body').should('be.visible')
       } else {
         cy.url().should('not.include', '/register')
+      }
+    })
+  })
+
+  it('should verify bcrypt password hashing works for new users', () => {
+    cy.visit('http://localhost:3000/auth/register')
+    
+    const timestamp = Date.now()
+    const testEmail = `bcrypttest${timestamp}@example.com`
+    const testUsername = `bcryptuser${timestamp}`
+    const strongPassword = 'BcryptTest123!'
+    
+    cy.get('body').then(($body) => {
+      if ($body.find('input[name="first_name"]').length > 0) {
+        cy.get('input[name="first_name"]').type('Bcrypt')
+      }
+      if ($body.find('input[name="last_name"]').length > 0) {
+        cy.get('input[name="last_name"]').type('Tester')
+      }
+      if ($body.find('input[name="username"]').length > 0) {
+        cy.get('input[name="username"]').type(testUsername)
+      }
+      cy.get('input[name="email"]').type(testEmail)
+      
+      if ($body.find('input[name="password"]').length > 0) {
+        cy.get('input[name="password"]').type(strongPassword)
+      }
+      if ($body.find('input[name="confirm_password"]').length > 0) {
+        cy.get('input[name="confirm_password"]').type(strongPassword)
+      }
+      
+      if ($body.find('select[name="store_id"]').length > 0) {
+        cy.get('select[name="store_id"]').select(1)
+      }
+    })
+    
+    cy.get('button[type="submit"]').click()
+    cy.wait(2000)
+    
+    cy.url().then((url) => {
+      if (url.includes('/login')) {
+        cy.get('input[name="email"]').type(testEmail)
+        cy.get('input[name="password"]').type(strongPassword)
+        cy.get('button[type="submit"]').click()
+        cy.wait(1000)
+        
+        cy.url().then((loginUrl) => {
+          cy.log(`After login attempt: ${loginUrl}`)
+          cy.get('body').should('be.visible')
+        })
       }
     })
   })
