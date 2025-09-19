@@ -1,0 +1,234 @@
+extends layout
+
+block content
+  .container.mt-4
+    .row.justify-content-center
+      .col-lg-8.col-xl-6
+        .text-center.mb-4
+          .bg-primary.text-white.rounded-circle.d-inline-flex.align-items-center.justify-content-center.mb-3.profile-avatar-large
+            i.bi.bi-person-circle.fs-1
+          h1.display-6.fw-bold.mb-2 Profiel
+          p.lead.text-muted Persoonlijke gegevens en account informatie
+        
+        if user.active == 0
+          .alert.alert-warning.shadow-sm.mb-4
+            .row.align-items-center
+              .col-auto
+                i.bi.bi-exclamation-triangle.fs-2
+              .col
+                h6.mb-1.fw-bold Account Activatie Vereist
+                p.mb-0.small Je account is momenteel inactief. Activeer je account om toegang te krijgen tot alle functies.
+              .col-auto
+                button.btn.btn-warning.btn-sm(type="button" data-bs-toggle="modal" data-bs-target="#activateAccountModal")
+                  i.bi.bi-key.me-1
+                  | Activeren
+        
+        .card.shadow-lg.border-0.mb-5
+          .card-header.bg-primary.text-white.py-3
+            .row.align-items-center
+              .col
+                h4.mb-0.fw-bold
+                  i.bi.bi-person-badge.me-2
+                  | #{user.first_name} #{user.last_name}
+              .col-auto
+                if user.active == 1
+                  span.badge.bg-success.px-3.py-2
+                    i.bi.bi-check-circle.me-1
+                    | Actief
+                else
+                  span.badge.bg-danger.px-3.py-2
+                    i.bi.bi-x-circle.me-1
+                    | Inactief
+          
+          .card-body.p-4
+            .row.mb-4
+              .col-12
+                h5.fw-bold.border-bottom.pb-2.mb-3
+                  i.bi.bi-person-lines-fill.me-2
+                  | Persoonlijke Gegevens
+                
+                .row.g-3
+                  .col-md-6
+                    .info-item
+                      label.small.text-muted.fw-semibold Voornaam
+                      p.mb-0.fw-medium #{user.first_name}
+                  
+                  .col-md-6
+                    .info-item
+                      label.small.text-muted.fw-semibold Achternaam
+                      p.mb-0.fw-medium #{user.last_name}
+                  
+                  .col-md-6
+                    .info-item
+                      label.small.text-muted.fw-semibold E-mailadres
+                      p.mb-0.fw-medium
+                        i.bi.bi-envelope.me-1
+                        | #{user.email}
+                  
+                  .col-md-6
+                    .info-item
+                      label.small.text-muted.fw-semibold Gebruikersnaam
+                      p.mb-0.fw-medium
+                        i.bi.bi-at.me-1
+                        | #{user.username}
+            
+            .row.mb-4
+              .col-12
+                h5.fw-bold.border-bottom.pb-2.mb-3
+                  i.bi.bi-building.me-2
+                  | Werk Informatie
+                
+                .row.g-3
+                  .col-md-6
+                    .info-item
+                      label.small.text-muted.fw-semibold Staff ID
+                      p.mb-0.fw-medium
+                        span.badge.bg-light.text-dark.px-2.py-1
+                          | ##{user.staff_id}
+                  
+                  .col-md-6
+                    .info-item
+                      label.small.text-muted.fw-semibold Store ID
+                      p.mb-0.fw-medium
+                        span.badge.bg-light.text-dark.px-2.py-1
+                          | Store ##{user.store_id}
+                  
+                  .col-12
+                    .info-item
+                      label.small.text-muted.fw-semibold Store Adres
+                      p.mb-0.fw-medium
+                        i.bi.bi-geo-alt.me-1
+                        | #{user.store_address}
+                  
+                  if user.manager_name
+                    .col-12
+                      .info-item
+                        label.small.text-muted.fw-semibold Manager
+                        p.mb-0.fw-medium
+                          i.bi.bi-person-check.me-1
+                          | #{user.manager_name}
+            
+            .row.mb-4
+              .col-12
+                h5.fw-bold.border-bottom.pb-2.mb-3
+                  i.bi.bi-gear.me-2
+                  | Account Informatie
+                
+                .row.g-3
+                  .col-md-6
+                    .info-item
+                      label.small.text-muted.fw-semibold Account Status
+                      p.mb-0.fw-medium
+                        if user.active == 1
+                          span.badge.bg-success.px-2.py-1
+                            i.bi.bi-check-circle.me-1
+                            | Actief Account
+                        else
+                          span.badge.bg-danger.px-2.py-1
+                            i.bi.bi-x-circle.me-1
+                            | Inactief Account
+                  
+                  .col-md-6
+                    .info-item
+                      label.small.text-muted.fw-semibold Laatst Bijgewerkt
+                      p.mb-0.fw-medium
+                        i.bi.bi-calendar-event.me-1
+                        | #{new Date(user.profile_last_update).toLocaleDateString('nl-NL')}
+          
+          .card-footer.bg-light.py-3
+            .row.g-2
+              .col-md-6
+                a.btn.btn-primary.w-100(href="/")
+                  i.bi.bi-house.me-2
+                  | Terug
+              .col-md-6
+                if user.active == 0
+                  button.btn.btn-success.w-100(type="button" data-bs-toggle="modal" data-bs-target="#activateAccountModal")
+                    i.bi.bi-key.me-2
+                    | Account Activeren
+                else
+                  button.btn.btn-outline-secondary.w-100(type="button" data-bs-toggle="modal" data-bs-target="#editProfileModal")
+                    i.bi.bi-pencil.me-2
+                    | Profiel Bewerken
+
+  // Activate Account Modal
+  .modal.fade#activateAccountModal(tabindex="-1")
+    .modal-dialog.modal-lg
+      .modal-content
+        .modal-header.bg-warning.text-dark
+          h5.modal-title
+            i.bi.bi-key.me-2
+            | Account Activeren
+          button.btn-close(type="button" data-bs-dismiss="modal")
+        .modal-body
+          .alert.alert-warning
+            i.bi.bi-exclamation-triangle.me-2
+            strong Let op: 
+            | Je account is momenteel inactief. Om toegang te krijgen tot alle functies, moet je je account activeren met de juiste activatiecode.
+          
+          form#activateForm(action="/auth/activate" method="POST")
+            .mb-3
+              label.form-label.fw-semibold(for="activationKey")
+              input.form-control.form-control-lg#activationKey(type="password" name="activationKey" placeholder="Voer je activatiecode in... (zie .ENV bestand in de folder, pak hier uit 'SECRET_KEY')" required)
+              .form-text
+                i.bi.bi-info-circle.me-1
+                | Neem contact op met je administrator als je geen activatiecode hebt.
+            
+            .d-grid.gap-2.d-md-flex.justify-content-md-end
+              button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Annuleren
+              button.btn.btn-success(type="submit")
+                i.bi.bi-check-circle.me-2
+                | Activeren
+        .modal-footer.bg-light
+          .small.text-muted
+            i.bi.bi-shield-check.me-1
+            | Na activatie krijg je toegang tot alle functies van het systeem.
+
+  .modal.fade#editProfileModal(tabindex="-1")
+    .modal-dialog.modal-lg
+      .modal-content
+        .modal-header.bg-primary.text-white
+          h5.modal-title
+            i.bi.bi-pencil-square.me-2
+            | Profiel Bewerken
+          button.btn-close.btn-close-white(type="button" data-bs-dismiss="modal")
+        .modal-body
+          .alert.alert-info.mb-4
+            i.bi.bi-info-circle.me-2
+            | Wijzig hieronder je persoonlijke gegevens. Je wachtwoord kan niet via deze pagina worden gewijzigd.
+          
+          form#editProfileForm(action="/auth/edit-profile" method="POST")
+            .row.g-3
+              .col-md-6
+                .mb-3
+                  label.form-label.fw-semibold(for="editFirstName") Voornaam
+                  input.form-control#editFirstName(type="text" name="first_name" value=user.first_name minlength="2" maxlength="50" required)
+                  .form-text Minimaal 2 karakters
+              
+              .col-md-6
+                .mb-3
+                  label.form-label.fw-semibold(for="editLastName") Achternaam
+                  input.form-control#editLastName(type="text" name="last_name" value=user.last_name minlength="2" maxlength="50" required)
+                  .form-text Minimaal 2 karakters
+              
+              .col-md-6
+                .mb-3
+                  label.form-label.fw-semibold(for="editEmail") E-mailadres
+                  input.form-control#editEmail(type="email" name="email" value=user.email maxlength="100" required)
+                  .form-text Geldig e-mailadres vereist
+              
+              .col-md-6
+                .mb-3
+                  label.form-label.fw-semibold(for="editUsername") Gebruikersnaam
+                  input.form-control#editUsername(type="text" name="username" value=user.username minlength="3" maxlength="50" pattern="[a-zA-Z0-9]+" required)
+                  .form-text Alleen letters en cijfers, 3-50 karakters
+            
+            .d-grid.gap-2.d-md-flex.justify-content-md-end.mt-4
+              button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Annuleren
+              button.btn.btn-primary(type="submit")
+                i.bi.bi-check-circle.me-2
+                | Wijzigingen Opslaan
+        .modal-footer.bg-light
+          .small.text-muted
+            i.bi.bi-exclamation-triangle.me-1
+            | Controleer je gegevens goed voordat je opslaat. E-mailadres en gebruikersnaam moeten uniek zijn.
