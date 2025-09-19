@@ -1,13 +1,123 @@
 extends layout
 
 block content
-  .container.mt-5
+  .container.mt-4
     .row.justify-content-center
-      .col-md-8
-        .card.shadow-lg
-          .card-body.text-center
-            h1.display-4.mb-3= title
-
-            a.btn.btn-primary.btn-lg(href="/customers")
-              i.bi.bi-people-fill.me-2
-              | Customers
+      .col-lg-8.col-xl-6
+        .text-center.mb-4
+          h1.display-5.fw-bold.text-primary.mb-3
+            i.bi.bi-building-check.me-3
+            | Sakila Film Verhuur
+          if user
+            p.lead.text-muted Welkom #{user.first_name} bij ons moderne platform voor klant en verhuur-beheer
+          else
+            p.lead.text-muted Welkom bij ons moderne platform voor klant en verhuur-beheer
+        
+        if user && user.active == 0
+          .alert.alert-warning.shadow-sm.mb-4
+            .row.align-items-center
+              .col-auto
+                i.bi.bi-exclamation-triangle.fs-3.text-warning
+              .col
+                h6.mb-1.fw-bold Account Activatie Vereist
+                p.mb-0.small Je account is momenteel inactief. Je hebt beperkte toegang tot het systeem. Ga naar je profiel om je account te activeren.
+              .col-auto
+                a.btn.btn-warning.btn-sm(href="/auth/profile")
+                  i.bi.bi-person.me-1
+                  | Ga naar Profiel
+        
+        .card.shadow-lg.border-0
+          .card-body.p-5
+            .row.align-items-center
+              if user
+                // Ingelogde gebruiker:
+                .col-12
+                  h3.fw-bold.mb-4.text-center Wat kun je doen?
+                  .row
+                    .col-md-6.mb-4
+                      .text-center
+                        .bg-primary.text-white.rounded-circle.d-flex.align-items-center.justify-content-center.mx-auto.mb-3.profile-avatar-medium
+                          i.bi.bi-people.fs-4
+                        h6.fw-semibold.mb-2 Klanten beheren
+                        p.text-muted.small Registreer nieuwe klanten, bewerk gegevens en houd alle verhuur en klantdata overzichtelijk bij
+                    
+                    .col-md-6.mb-4
+                      .text-center
+                        .bg-info.text-white.rounded-circle.d-flex.align-items-center.justify-content-center.mx-auto.mb-3.profile-avatar-medium
+                          i.bi.bi-film.fs-4
+                        h6.fw-semibold.mb-2 Films beheren
+                        p.text-muted.small Beheer filmcatalogus, verhuur films aan klanten en houd verhuurstatus bij
+         
+                    .col-md-6.mb-4
+                      .text-center
+                        .bg-success.text-white.rounded-circle.d-flex.align-items-center.justify-content-center.mx-auto.mb-3.profile-avatar-medium
+                          i.bi.bi-search.fs-4
+                        h6.fw-semibold.mb-2 Snel zoeken
+                        p.text-muted.small Vind klantgegevens en films snel terug met geavanceerde zoekfuncties
+                    
+                    .col-md-6.mb-4
+                      .text-center
+                        .bg-warning.text-white.rounded-circle.d-flex.align-items-center.justify-content-center.mx-auto.mb-3.profile-avatar-medium
+                          i.bi.bi-shield-check.fs-4
+                        h6.fw-semibold.mb-2 Veilig opslaan
+                        p.text-muted.small Alle gegevens worden veilig opgeslagen met moderne beveiligingsstandaarden
+                  
+                  .text-center.mt-4.pt-3.border-top
+                    p.small.text-muted.mb-3 Klik hier voor meer informatie en documentatie voor deze opdracht:
+                    a.btn.btn-outline-primary(href="/about" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="De 'About' pagina voor de opdracht. Bevat epics, user stories, wireframes en een korte toelichting.")
+                      i.bi.bi-eye.me-2
+                      | Bekijk
+              else
+                // Niet-ingelogde gebruiker:
+                .col-md-6
+                  h3.fw-bold.mb-3 Wat kun je doen?
+                  .mb-4
+                    .d-flex.align-items-start.mb-3
+                      .bg-primary.text-white.rounded-circle.d-flex.align-items-center.justify-content-center.me-3.profile-avatar-small
+                        i.bi.bi-people
+                      div
+                        h6.fw-semibold.mb-1 Klanten beheren
+                        p.text-muted.small.mb-0 Registreer nieuwe klanten, bewerk gegevens en houd alle verhuur en klantdata overzichtelijk bij
+                    
+                    .d-flex.align-items-start.mb-3
+                      .bg-info.text-white.rounded-circle.d-flex.align-items-center.justify-content-center.me-3.profile-avatar-small
+                        i.bi.bi-film
+                      div
+                        h6.fw-semibold.mb-1 Films beheren
+                        p.text-muted.small.mb-0 Beheer filmcatalogus, verhuur films aan klanten en houd verhuurstatus bij
+                    
+                    .d-flex.align-items-start.mb-3
+                      .bg-success.text-white.rounded-circle.d-flex.align-items-center.justify-content-center.me-3.profile-avatar-small
+                        i.bi.bi-search
+                      div
+                        h6.fw-semibold.mb-1 Snel zoeken
+                        p.text-muted.small.mb-0 Vind klantgegevens en films snel terug met geavanceerde zoekfuncties
+                    
+                    .d-flex.align-items-start.mb-3
+                      .bg-warning.text-white.rounded-circle.d-flex.align-items-center.justify-content-center.me-3.profile-avatar-small
+                        i.bi.bi-shield-check
+                      div
+                        h6.fw-semibold.mb-1 Veilig opslaan
+                        p.text-muted.small.mb-0 Alle gegevens worden veilig opgeslagen met moderne beveiligingsstandaarden en kunnen pas met rechten worden bekeken
+                
+                .col-md-6
+                  .bg-light.rounded.p-4.text-center
+                    .d-flex.justify-content-center.align-items-center.mb-3
+                      h4.fw-bold.mb-0 Aan de slag
+                      button.btn.btn-link.p-0.ms-2(type="button" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="<strong>Belangrijk:</strong><br>Pas met toegekende rechten kunt u gegevens bekijken. Bij het aanmaken van een account moet daarom een admin deze toegang geven.")
+                        i.bi.bi-info-circle.text-primary
+                    p.text-muted.mb-4 Log in om toegang te krijgen tot alle functies van het klantenbeheersysteem
+                    
+                    .d-grid.gap-2
+                      a.btn.btn-primary.btn-lg(href="/auth/login")
+                        i.bi.bi-box-arrow-in-right.me-2
+                        | Inloggen
+                      a.btn.btn-outline-secondary.btn-lg(href="/auth/register")
+                        i.bi.bi-person-plus.me-2
+                        | Registreren
+                    
+                    .mt-4.pt-3.border-top
+                      p.small.text-muted.mb-2 Klik hier voor meer informatie en documentatie voor deze opdracht:
+                      a.btn.btn-sm.btn-outline-primary(href="/customers" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="De 'About' pagina voor de opdracht. Bevat epics, user stories, wireframes en een korte toelichting.")
+                        i.bi.bi-eye.me-1
+                        | Bekijk

@@ -1,0 +1,182 @@
+extends layout
+
+block content
+  .container.mt-4
+    if flash
+      .alert(class=`alert-${flash.type}` role="alert")
+        = flash.message
+    
+    .row
+      .col-lg-6.col-md-12.mb-4
+        .card.shadow-sm.border-0.h-100
+          .card-header.bg-primary.text-white.text-center.py-3
+            h4.mb-0
+              i.bi.bi-film.me-2
+              | Film Details
+          .card-body.p-4
+            .text-center.mb-4
+              .display-6.text-primary.mb-2
+                i.bi.bi-camera-reels
+              h3.mb-1 #{film.title}
+              .badge.bg-secondary.rounded-pill Film ID: #{film.film_id}
+            
+            .row.gy-3
+              .col-12
+                .card.bg-light.border-0
+                  .card-body.py-2
+                    .row.align-items-center
+                      .col-3.text-center
+                        i.bi.bi-calendar.text-primary.fs-5
+                      .col-9
+                        .fw-bold.text-muted.small Jaar
+                        .fs-6 #{film.release_year || 'Onbekend'}
+              
+              .col-12
+                .card.bg-light.border-0
+                  .card-body.py-2
+                    .row.align-items-center
+                      .col-3.text-center
+                        i.bi.bi-star.text-primary.fs-5
+                      .col-9
+                        .fw-bold.text-muted.small Rating
+                        .fs-6 #{film.rating || 'Geen rating'}
+              
+              .col-12
+                .card.bg-light.border-0
+                  .card-body.py-2
+                    .row.align-items-center
+                      .col-3.text-center
+                        i.bi.bi-clock.text-primary.fs-5
+                      .col-9
+                        .fw-bold.text-muted.small Duur
+                        .fs-6 #{film.length || 'Onbekend'} minuten
+              
+              .col-12
+                .card.bg-light.border-0
+                  .card-body.py-2
+                    .row.align-items-center
+                      .col-3.text-center
+                        i.bi.bi-cash.text-primary.fs-5
+                      .col-9
+                        .fw-bold.text-muted.small Vervangingskosten
+                        .fs-6 €#{parseFloat(film.replacement_cost || 0).toFixed(2)}
+              
+              if film.description
+                .col-12
+                  .card.bg-light.border-0
+                    .card-body.py-2
+                      .fw-bold.text-muted.small Beschrijving
+                      .fs-6.mt-1 #{film.description}
+            
+            .d-grid.gap-2.mt-4
+              a.btn.btn-primary.btn-lg(href="/films")
+                i.bi.bi-arrow-left.me-2
+                | Terug naar Films Overzicht
+      
+      .col-lg-6.col-md-12.mb-4
+        .card.shadow-sm.border-0.h-100
+          .card-header.card-header-centered(class=film.rental_status === 'rented' ? 'bg-danger text-white' : 'bg-success text-white')
+            h4.mb-0
+              if film.rental_status === 'rented'
+                i.bi.bi-person-check.me-2
+                | Verhuurd aan
+              else
+                i.bi.bi-check-circle.me-2
+                | Beschikbaar
+          
+          .card-body.p-4
+            if film.rental_status === 'rented'
+              .text-center.mb-4
+                .display-6.text-danger.mb-2
+                  i.bi.bi-person-fill
+                h5.mb-1.text-danger Verhuurd aan
+                if film.customer_first_name && film.customer_last_name
+                  a.text-decoration-none(href=`/customers/${film.customer_id}`)
+                    .badge.bg-primary.rounded-pill.fs-6.p-2
+                      i.bi.bi-person.me-1
+                      | #{film.customer_first_name} #{film.customer_last_name}
+                else
+                  .text-muted Onbekende klant
+              
+              .row.gy-3
+                if film.rental_date
+                  .col-12
+                    .card.bg-light.border-0
+                      .card-body.py-2
+                        .row.align-items-center
+                          .col-3.text-center
+                            i.bi.bi-calendar-check.text-danger.fs-5
+                          .col-9
+                            .fw-bold.text-muted.small Verhuurd op
+                            .fs-6 #{new Date(film.rental_date).toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' })}
+                
+                if film.rental_amount
+                  .col-12
+                    .card.bg-light.border-0
+                      .card-body.py-2
+                        .row.align-items-center
+                          .col-3.text-center
+                            i.bi.bi-currency-euro.text-success.fs-5
+                          .col-9
+                            .fw-bold.text-muted.small Betaald bedrag
+                            .fs-6 €#{parseFloat(film.rental_amount).toFixed(2)}
+                
+                if film.payment_date
+                  .col-12
+                    .card.bg-light.border-0
+                      .card-body.py-2
+                        .row.align-items-center
+                          .col-3.text-center
+                            i.bi.bi-calendar-check.text-success.fs-5
+                          .col-9
+                            .fw-bold.text-muted.small Betaald op
+                            .fs-6 #{new Date(film.payment_date).toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' })}
+              
+              .d-grid.gap-2.mt-4
+                if film.customer_id
+                  a.btn.btn-outline-primary.btn-lg(href=`/customers/${film.customer_id}`)
+                    i.bi.bi-person.me-2
+                    | Bekijk Klantprofiel
+            
+            else
+              .text-center.mb-4
+                .display-6.text-success.mb-2
+                  i.bi.bi-check-circle
+                h5.mb-1 Klaar voor verhuur
+                p.text-muted Selecteer een klant om deze film te verhuren
+              
+              form(method="POST", action=`/films/${film.film_id}/rent`)
+                input(type="hidden", name="film_id", value=film.film_id)
+                
+                .mb-3
+                  label.form-label(for="customer_id")
+                    i.bi.bi-person.me-2
+                    strong Selecteer klant:
+                  select.form-select.form-select-lg(name="customer_id", id="customer_id", required)
+                    option(value="") Kies een klant...
+                    each customer in customers
+                      option(value=customer.customer_id) #{customer.first_name} #{customer.last_name} (ID: #{customer.customer_id})
+                
+                .d-grid.gap-2.mt-4
+                  button.btn.btn-success.btn-lg(type="submit")
+                    i.bi.bi-play-circle.me-2
+                    | Film Verhuren
+                  
+                  .small.text-muted.text-center.mt-2
+                    i.bi.bi-info-circle.me-1
+                    | Door te verhuren wordt automatisch een rental record aangemaakt
+
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.querySelector('form[action*="/rent"]');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          const customerSelect = document.getElementById('customer_id');
+          if (!customerSelect.value) {
+            e.preventDefault();
+            alert('Selecteer eerst een klant voordat u de film verhuurt.');
+            customerSelect.focus();
+          }
+        });
+      }
+    });

@@ -1,0 +1,288 @@
+extends layout
+
+block content
+  .container.mt-4
+    if flash
+      .alert(class=`alert-${flash.type}` role="alert")
+        = flash.message
+    
+    .row
+      // Klantinformatie
+      .col-lg-4.col-md-6.mb-4
+        .card.shadow-sm.border-0.h-100
+          .card-header.bg-info.text-white.text-center.py-3
+            h4.mb-0
+              i.bi.bi-person-circle.me-2
+              | Klantprofiel
+          .card-body.p-4
+            .text-center.mb-4
+              .display-6.text-primary.mb-2
+                i.bi.bi-person-badge
+              h4.mb-1 #{customer.first_name} #{customer.last_name}
+              .badge.bg-secondary.rounded-pill ID: #{customer.customer_id}
+            
+            // Gegevens weergave
+            .customer-info(id="customer-info")
+              .row.gy-3
+                .col-12
+                  .card.bg-light.border-0
+                    .card-body.py-2
+                      .row.align-items-center
+                        .col-3.text-center
+                          i.bi.bi-envelope.text-primary.fs-5
+                        .col-9
+                          .fw-bold.text-muted.small Email
+                          .fs-6 #{customer.email || 'Geen email opgegeven'}
+                
+                .col-12
+                  .card.bg-light.border-0
+                    .card-body.py-2
+                      .row.align-items-center
+                        .col-3.text-center
+                          i.bi.bi-shop.text-primary.fs-5
+                        .col-9
+                          .fw-bold.text-muted.small Winkel
+                          if customer.store_address
+                            .fs-6 #{customer.store_address}
+                            .small.text-muted #{customer.store_city}, #{customer.store_postal_code}
+                          else
+                            .fs-6 Winkel ID: #{customer.store_id}
+                
+                .col-12
+                  .card.bg-light.border-0
+                    .card-body.py-2
+                      .row.align-items-center
+                        .col-3.text-center
+                          i.bi.bi-geo-alt.text-primary.fs-5
+                        .col-9
+                          .fw-bold.text-muted.small Adres
+                          if customer.customer_address
+                            .fs-6 #{customer.customer_address}
+                            .small.text-muted #{customer.customer_city}, #{customer.customer_postal_code}
+                          else
+                            .fs-6 Adres ID: #{customer.address_id}
+                
+                .col-12
+                  .card.bg-light.border-0
+                    .card-body.py-2
+                      .row.align-items-center
+                        .col-3.text-center
+                          i.bi.bi-calendar-plus.text-primary.fs-5
+                        .col-9
+                          .fw-bold.text-muted.small Aangemaakt
+                          .fs-6 #{new Date(customer.create_date).toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' })}
+                
+                .col-12
+                  .card.bg-light.border-0
+                    .card-body.py-2
+                      .row.align-items-center
+                        .col-3.text-center
+                          if customer.active
+                            i.bi.bi-check-circle.text-success.fs-5
+                          else
+                            i.bi.bi-x-circle.text-danger.fs-5
+                        .col-9
+                          .fw-bold.text-muted.small Status
+                          if customer.active
+                            .badge.bg-success Actief
+                          else
+                            .badge.bg-danger Inactief
+            
+            .customer-edit.customer-edit-hidden#customer-edit
+              form(method="POST" action=`/customers/${customer.customer_id}/update`)
+                .mb-3
+                  label.form-label(for="first_name") Voornaam
+                  input.form-control(type="text" id="first_name" name="first_name" value=customer.first_name required)
+                .mb-3
+                  label.form-label(for="last_name") Achternaam
+                  input.form-control(type="text" id="last_name" name="last_name" value=customer.last_name required)
+                .mb-3
+                  label.form-label(for="email") Email
+                  input.form-control(type="email" id="email" name="email" value=customer.email)
+                .d-flex.gap-2
+                  button.btn.btn-success.flex-fill(type="submit")
+                    i.bi.bi-check2.me-1
+                    | Opslaan
+                  button.btn.btn-secondary.flex-fill(type="button" onclick="toggleEdit()")
+                    i.bi.bi-x.me-1
+                    | Annuleren
+            
+            .d-grid.gap-2.mt-4
+              // Bewerk knop
+              button.btn.btn-outline-primary(id="edit-btn" onclick="toggleEdit()")
+                i.bi.bi-pencil.me-2
+                | Bewerken
+              
+              .row.g-2
+                .col-6
+                  button.btn.btn-outline-danger.w-100(data-bs-toggle="modal" data-bs-target="#deleteModal")
+                    i.bi.bi-trash.me-1
+                    | Verwijderen
+                .col-6
+                  a.btn.btn-outline-secondary.w-100(href="/customers")
+                    i.bi.bi-arrow-left.me-1
+                    | Terug
+      
+      // Verhuurgeschiedenis
+      .col-lg-8.col-md-6
+        .card.shadow-sm.border-0.h-100
+          .card-header.bg-success.text-white.d-flex.justify-content-between.align-items-center
+            h4.mb-0
+              i.bi.bi-film.me-2
+              | Verhuurgeschiedenis
+            .btn-group(role="group")
+              .dropdown
+                button.btn.btn-outline-light.dropdown-toggle(type="button" data-bs-toggle="dropdown")
+                  i.bi.bi-sort-down.me-1
+                  | Sorteren
+                ul.dropdown-menu
+                  li
+                    a.dropdown-item(href=`?sort=rental_date&order=DESC`) Huursdatum (nieuw → oud)
+                  li
+                    a.dropdown-item(href=`?sort=rental_date&order=ASC`) Huursdatum (oud → nieuw)
+                  li
+                    a.dropdown-item(href=`?sort=return_date&order=DESC`) Retour datum (nieuw → oud)
+                  li
+                    a.dropdown-item(href=`?sort=return_date&order=ASC`) Retour datum (oud → nieuw)
+                  li
+                    a.dropdown-item(href=`?sort=title&order=ASC`) Filmtitel (A → Z)
+                  li
+                    a.dropdown-item(href=`?sort=title&order=DESC`) Filmtitel (Z → A)
+                  li
+                    a.dropdown-item(href=`?sort=payment_amount&order=DESC`) Betaling (hoog → laag)
+                  li
+                    a.dropdown-item(href=`?sort=payment_amount&order=ASC`) Betaling (laag → hoog)
+          
+          .card-body.p-0
+            if rentals && rentals.length > 0
+              .table-responsive
+                table.table.table-hover.mb-0
+                  thead.table-light
+                    tr
+                      th Film
+                      th Gehuurd op
+                      th Teruggebracht
+                      th.table-col-payment Betaling
+                      th Medewerker
+                      th Status
+                  tbody
+                    each rental in rentals
+                      tr
+                        td
+                          .fw-bold #{rental.title || 'Onbekende film'}
+                          if rental.description
+                            .small.text-muted #{rental.description.substring(0, 100)}...
+                          if rental.release_year || rental.rating
+                            .small.text-muted
+                              if rental.release_year
+                                span Jaar: #{rental.release_year}
+                              if rental.rating
+                                span.ms-2 Rating: #{rental.rating}
+                        td
+                          .small #{new Date(rental.rental_date).toLocaleDateString('nl-NL')}
+                          .text-muted.small #{new Date(rental.rental_date).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}
+                        td
+                          if rental.return_date
+                            .small #{new Date(rental.return_date).toLocaleDateString('nl-NL')}
+                            .text-muted.small #{new Date(rental.return_date).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}
+                          else
+                            .badge.bg-warning.text-dark Nog niet terug
+                        td.table-col-payment
+                          if rental.payment_amount
+                            .fw-bold.text-success €#{parseFloat(rental.payment_amount).toFixed(2)}
+                            if rental.payment_date
+                              .small.text-muted.text-nowrap Betaald: #{new Date(rental.payment_date).toLocaleDateString('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                          else
+                            .badge.bg-secondary Geen betaling
+                        td
+                          if rental.staff_first_name && rental.staff_last_name
+                            .small #{rental.staff_first_name} #{rental.staff_last_name}
+                          else
+                            .text-muted.small Onbekend
+                        td
+                          if rental.return_date
+                            .badge.bg-success Voltooid
+                          else
+                            .badge.bg-primary Actief
+            else
+              .p-4.text-center.text-muted
+                i.bi.bi-film.display-1.mb-3.text-light
+                h5 Geen verhuurgeschiedenis
+                p Deze klant heeft nog geen films gehuurd.
+
+  // Delete bevestiging modal
+  .modal.fade(id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true")
+    .modal-dialog.modal-dialog-centered
+      .modal-content
+        .modal-header.bg-danger.text-white
+          h5.modal-title(id="deleteModalLabel")
+            i.bi.bi-exclamation-triangle.me-2
+            | Klant verwijderen
+          button.btn-close.btn-close-white(type="button" data-bs-dismiss="modal" aria-label="Sluiten")
+        .modal-body
+          .d-flex.align-items-center.mb-3
+            .me-3
+              i.bi.bi-person-x.display-4.text-danger
+            div
+              h6.mb-1 #{customer.first_name} #{customer.last_name}
+              .text-muted Klant ID: #{customer.customer_id}
+          
+          .alert.alert-warning.border-0
+            .d-flex.align-items-start
+              i.bi.bi-exclamation-triangle-fill.text-warning.me-2.mt-1
+              div
+                strong Waarschuwing:
+                p.mb-2.small Dit zal de volgende gegevens permanent verwijderen:
+                ul.small.mb-0
+                  li Alle verhuurgegevens van deze klant
+                  li Alle betalingen van deze klant  
+                  li Het klantprofiel zelf
+          
+          p.mb-0
+            strong Weet je zeker dat je deze klant en al hun gegevens permanent wilt verwijderen?
+            br
+            .small.text-danger Deze actie kan niet ongedaan worden gemaakt.
+        
+        .modal-footer
+          button.btn.btn-secondary(type="button" data-bs-dismiss="modal")
+            i.bi.bi-x.me-1
+            | Annuleren
+          button.btn.btn-danger(id="confirmDeleteBtn")
+            i.bi.bi-trash.me-1
+            | Ja, verwijderen
+
+  script.
+    function confirmDelete() {
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/customers/#{customer.customer_id}/delete';
+      document.body.appendChild(form);
+      form.submit();
+    }
+
+    function toggleEdit() {
+      const infoDiv = document.getElementById('customer-info');
+      const editDiv = document.getElementById('customer-edit');
+      const editBtn = document.getElementById('edit-btn');
+      
+      if (editDiv.classList.contains('customer-edit-hidden')) {
+        infoDiv.style.display = 'none';
+        editDiv.classList.remove('customer-edit-hidden');
+        editDiv.style.display = 'block';
+        editBtn.style.display = 'none';
+      } else {
+        infoDiv.style.display = 'block';
+        editDiv.classList.add('customer-edit-hidden');
+        editDiv.style.display = 'none';
+        editBtn.style.display = 'block';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+      if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener('click', function() {
+          confirmDelete();
+        });
+      }
+    });

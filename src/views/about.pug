@@ -1,0 +1,710 @@
+extends layout
+
+block content
+  .container.mt-4
+    .row.justify-content-center
+      .col-lg-10.col-xl-9
+        .text-center.mb-5
+          h1.display-4.fw-bold.text-primary.mb-3
+            i.bi.bi-building-check.me-3
+            | Sakila Film Verhuur Management
+          p.lead.text-muted Staff Management System - Volledig overzicht van epics en user stories
+          .badge.bg-primary.rounded-pill.fs-6.px-3.py-2 Staff Perspectief
+        
+        .card.shadow-sm.border-0.mb-5
+          .card-header.bg-info.text-white.text-center.py-3
+            h3.mb-0
+              i.bi.bi-info-circle.me-2
+              | Overzicht
+          .card-body.p-4
+            .row
+              .col-md-6.mb-3
+                h5.text-primary
+                  i.bi.bi-gear.me-2
+                  | Technische Stack
+                ul.list-unstyled.ms-3
+                  li
+                    i.bi.bi-check-circle.text-success.me-2
+                    | Node.js + Express.js
+                  li
+                    i.bi.bi-check-circle.text-success.me-2
+                    | MySQL (Sakila Database)
+                  li
+                    i.bi.bi-check-circle.text-success.me-2
+                    | Bootstrap 5 + Pug Templates
+                  li
+                    i.bi.bi-check-circle.text-success.me-2
+                    | MVC Architectuur
+              .col-md-6.mb-3
+                h5.text-primary
+                  i.bi.bi-person-badge.me-2
+                  | Staff Viewpoint
+                p.text-muted 
+                  strong Als 
+                  | staff member kan ik:
+                ul.list-unstyled.ms-3
+                  li
+                    i.bi.bi-arrow-right.text-primary.me-2
+                    | Klanten beheren, 
+                    strong zodat 
+                    | ik klantenservice kan verlenen
+                  li
+                    i.bi.bi-arrow-right.text-primary.me-2
+                    | Films overzicht bekijken, 
+                    strong zodat 
+                    | ik beschikbaarheid kan controleren
+                  li
+                    i.bi.bi-arrow-right.text-primary.me-2
+                    | Verhuur administratie, 
+                    strong zodat 
+                    | ik verhuurprocessen kan beheren
+                  li
+                    i.bi.bi-arrow-right.text-primary.me-2
+                    | Account management, 
+                    strong zodat 
+                    | ik mijn profiel kan onderhouden
+
+        .mb-5
+          h2.text-center.mb-4.text-primary
+            i.bi.bi-bookmark-star.me-2
+            | Epics Overzicht
+
+          .card.shadow-sm.border-0.mb-4
+            .card-header.bg-success.text-white.d-flex.align-items-center
+              .me-3
+                .display-6
+                  i.bi.bi-people-fill
+              div
+                h4.mb-1 Epic 1: Klanten Management Systeem
+                p.mb-0.opacity-75 Complete CRUD functionaliteit voor klantbeheer
+            .card-body.p-4
+              .row
+                .col-md-6
+                  h6.text-success.mb-3
+                    i.bi.bi-bullseye.me-2
+                    | Doel
+                  p.text-muted 
+                    strong Als 
+                    | staff member wil ik een overzichtelijk systeem om alle klanten te kunnen beheren, 
+                    strong zodat 
+                    | ik efficiënt klantenservice kan verlenen.
+                .col-md-6
+                  h6.text-success.mb-3
+                    i.bi.bi-check2-square.me-2
+                    | Acceptatiecriteria
+                  ul.list-unstyled.text-muted
+                    li
+                      i.bi.bi-check.text-success.me-2
+                      | Alle klanten zijn zichtbaar in overzicht
+                    li
+                      i.bi.bi-check.text-success.me-2
+                      | Zoekfunctionaliteit op naam en email
+                    li
+                      i.bi.bi-check.text-success.me-2
+                      | Klantprofiel met verhuurgeschiedenis
+                    li
+                      i.bi.bi-check.text-success.me-2
+                      | Bewerken van klantgegevens mogelijk
+
+          .card.shadow-sm.border-0.mb-4
+            .card-header.bg-warning.text-dark.d-flex.align-items-center
+              .me-3
+                .display-6
+                  i.bi.bi-film
+              div
+                h4.mb-1 Epic 2: Films & Inventory Beheer
+                p.mb-0.opacity-75 Overzicht van alle films en beschikbaarheid
+            .card-body.p-4
+              .row
+                .col-md-6
+                  h6.text-warning.mb-3
+                    i.bi.bi-bullseye.me-2
+                    | Doel
+                  p.text-muted 
+                    strong Als 
+                    | staff member wil ik een duidelijk overzicht van alle films en hun beschikbaarheid, 
+                    strong zodat 
+                    | ik klanten goed kan adviseren over beschikbare titels.
+                .col-md-6
+                  h6.text-warning.mb-3
+                    i.bi.bi-check2-square.me-2
+                    | Acceptatiecriteria
+                  ul.list-unstyled.text-muted
+                    li
+                      i.bi.bi-check.text-success.me-2
+                      | Films overzicht met zoekfunctie
+                    li
+                      i.bi.bi-check.text-success.me-2
+                      | Rental status per film zichtbaar
+                    li
+                      i.bi.bi-check.text-success.me-2
+                      | Film details met beschrijving
+                    li
+                      i.bi.bi-check.text-success.me-2
+                      | Nieuwe verhuur kunnen starten
+
+          .card.shadow-sm.border-0.mb-4
+            .card-header.bg-danger.text-white.d-flex.align-items-center
+              .me-3
+                .display-6
+                  i.bi.bi-shield-check
+              div
+                h4.mb-1 Epic 3: Authenticatie & Autorisatie
+                p.mb-0.opacity-75 Veilige toegang en gebruikersbeheer
+            .card-body.p-4
+              .row
+                .col-md-6
+                  h6.text-danger.mb-3
+                    i.bi.bi-bullseye.me-2
+                    | Doel
+                  p.text-muted 
+                    strong Als 
+                    | staff member wil ik veilig kunnen inloggen en mijn account kunnen beheren, 
+                    strong zodat 
+                    | alleen geautoriseerde personen toegang hebben tot het systeem.
+                .col-md-6
+                  h6.text-danger.mb-3
+                    i.bi.bi-check2-square.me-2
+                    | Acceptatiecriteria
+                  ul.list-unstyled.text-muted
+                    li
+                      i.bi.bi-check.text-success.me-2
+                      | Veilige login met sessie beheer
+                    li
+                      i.bi.bi-check.text-success.me-2
+                      | Profiel bewerken functionaliteit
+                    li
+                      i.bi.bi-check.text-success.me-2
+                      | Account activatie proces
+                    li
+                      i.bi.bi-check.text-success.me-2
+                      | Automatische uitlog na inactiviteit
+
+        .mb-5
+          h2.text-center.mb-4.text-primary
+            i.bi.bi-person-lines-fill.me-2
+            | User Stories
+
+          .row
+            .col-lg-6.mb-4
+              .card.shadow-sm.border-0.h-100
+                .card-header.bg-success.text-white.text-center.py-3
+                  h5.mb-0
+                    i.bi.bi-people.me-2
+                    | Klanten Management
+                .card-body.p-4
+                  .user-story.mb-4
+                    .badge.bg-success.rounded-pill.mb-2 US-001
+                    h6.fw-bold Klanten Overzicht
+                    p.text-muted.small 
+                      strong Als 
+                      | staff member wil ik alle klanten in een overzichtelijke lijst kunnen zien, 
+                      strong zodat 
+                      | ik snel de juiste klant kan vinden.
+                    
+                  .user-story.mb-4
+                    .badge.bg-success.rounded-pill.mb-2 US-002
+                    h6.fw-bold Klant Zoeken
+                    p.text-muted.small 
+                      strong Als 
+                      | staff member wil ik kunnen zoeken op klantnaam en email, 
+                      strong zodat 
+                      | ik snel specifieke klanten kan vinden.
+                    
+                  .user-story.mb-4
+                    .badge.bg-success.rounded-pill.mb-2 US-003
+                    h6.fw-bold Klantprofiel Bekijken
+                    p.text-muted.small 
+                      strong Als 
+                      | staff member wil ik een gedetailleerd klantprofiel kunnen bekijken met persoonlijke gegevens en verhuurgeschiedenis, 
+                      strong zodat 
+                      | ik volledige klantinformatie heb voor betere service.
+                    
+                  .user-story.mb-4
+                    .badge.bg-success.rounded-pill.mb-2 US-004
+                    h6.fw-bold Klant Bewerken
+                    p.text-muted.small 
+                      strong Als 
+                      | staff member wil ik klantgegevens kunnen bewerken wanneer deze onjuist zijn of gewijzigd moeten worden, 
+                      strong zodat 
+                      | de database altijd actuele informatie bevat.
+                    
+                  .user-story.mb-0
+                    .badge.bg-success.rounded-pill.mb-2 US-005
+                    h6.fw-bold Klant Verwijderen
+                    p.text-muted.small 
+                      strong Als 
+                      | staff member wil ik klanten kunnen verwijderen uit het systeem , 
+                      strong zodat 
+                      | ik inactieve accounts kan opruimen.
+
+            .col-lg-6.mb-4
+              .card.shadow-sm.border-0.h-100
+                .card-header.bg-warning.text-dark.text-center.py-3
+                  h5.mb-0
+                    i.bi.bi-film.me-2
+                    | Films & Verhuur
+                .card-body.p-4
+                  .user-story.mb-4
+                    .badge.bg-warning.rounded-pill.mb-2 US-006
+                    h6.fw-bold Films Overzicht
+                    p.text-muted.small 
+                      strong Als 
+                      | staff member wil ik alle films kunnen zien met hun beschikbaarheidsstatus, 
+                      strong zodat 
+                      | ik weet welke films beschikbaar zijn.
+                    
+                  .user-story.mb-4
+                    .badge.bg-warning.rounded-pill.mb-2 US-007
+                    h6.fw-bold Film Zoeken
+                    p.text-muted.small 
+                      strong Als 
+                      | staff member wil ik kunnen zoeken op filmtitel en jaar, 
+                      strong zodat 
+                      | ik snel specifieke films kan vinden.
+                    
+                  .user-story.mb-4
+                    .badge.bg-warning.rounded-pill.mb-2 US-008
+                    h6.fw-bold Film Details
+                    p.text-muted.small 
+                      strong Als 
+                      | staff member wil ik film details kunnen bekijken inclusief beschrijving, jaar en huidige verhuurstatus, 
+                      strong zodat 
+                      | ik klanten volledig kan informeren.
+                    
+                  .user-story.mb-4
+                    .badge.bg-warning.rounded-pill.mb-2 US-009
+                    h6.fw-bold Nieuwe Verhuur
+                    p.text-muted.small 
+                      strong Als 
+                      | staff member wil ik een nieuwe verhuur kunnen starten door een film aan een klant toe te wijzen, 
+                      strong zodat 
+                      | ik het verhuurproces kan faciliteren.
+                    
+                  .user-story.mb-0
+                    .badge.bg-warning.rounded-pill.mb-2 US-010
+                    h6.fw-bold Verhuurgeschiedenis
+                    p.text-muted.small 
+                      strong Als 
+                      | staff member wil ik de verhuurgeschiedenis van elke klant kunnen bekijken met sorteeropties, 
+                      strong zodat 
+                      | ik een compleet overzicht heb van klantactiviteiten.
+
+          .row
+            .col-lg-6.mb-4
+              .card.shadow-sm.border-0.h-100
+                .card-header.bg-danger.text-white.text-center.py-3
+                  h5.mb-0
+                    i.bi.bi-shield-check.me-2
+                    | Authenticatie
+                .card-body.p-4
+                  .user-story.mb-4
+                    .badge.bg-danger.rounded-pill.mb-2 US-011
+                    h6.fw-bold Inloggen
+                    p.text-muted.small 
+                      strong Als 
+                      | staff member wil ik veilig kunnen inloggen met email en wachtwoord, 
+                      strong zodat 
+                      | alleen ik toegang heb tot mijn account.
+                    
+                  .user-story.mb-4
+                    .badge.bg-danger.rounded-pill.mb-2 US-012
+                    h6.fw-bold Account Registreren
+                    p.text-muted.small 
+                      strong Als 
+                      | nieuwe staff member wil ik een account kunnen registreren met sterke wachtwoordvalidatie, 
+                      strong zodat 
+                      | mijn account veilig is.
+                    
+                  .user-story.mb-4
+                    .badge.bg-danger.rounded-pill.mb-2 US-013
+                    h6.fw-bold Profiel Beheer
+                    p.text-muted.small 
+                      strong Als 
+                      | staff member wil ik mijn persoonlijke gegevens kunnen bewerken in mijn profiel, 
+                      strong zodat 
+                      | mijn informatie actueel blijft.
+                    
+                  .user-story.mb-0
+                    .badge.bg-danger.rounded-pill.mb-2 US-014
+                    h6.fw-bold Account Activeren
+                    p.text-muted.small 
+                      strong Als 
+                      | staff member wil ik mijn account kunnen activeren, 
+                      strong zodat 
+                      | ik volledige toegang krijg tot alle functies en niet zonder toestemming bij bepaalde data kom.
+
+            .col-lg-6.mb-4
+              .card.shadow-sm.border-0.h-100
+                .card-header.bg-info.text-white.text-center.py-3
+                  h5.mb-0
+                    i.bi.bi-laptop.me-2
+                    | UX & Technisch
+                .card-body.p-4
+                  .user-story.mb-4
+                    .badge.bg-info.rounded-pill.mb-2 US-015
+                    h6.fw-bold Responsive Design
+                    p.text-muted.small 
+                      strong Als 
+                      | staff member wil ik het systeem kunnen gebruiken op verschillende apparaten (desktop, tablet, mobiel), 
+                      strong zodat 
+                      | ik overal kan werken.
+                    
+                  .user-story.mb-4
+                    .badge.bg-info.rounded-pill.mb-2 US-016
+                    h6.fw-bold Error Handling
+                    p.text-muted.small 
+                      strong Als 
+                      | staff member wil ik duidelijke foutmeldingen zien als er iets misgaat, 
+                      strong zodat 
+                      | ik weet wat er gebeurd is.
+                    
+                  .user-story.mb-4
+                    .badge.bg-info.rounded-pill.mb-2 US-017
+                    h6.fw-bold Paginatie
+                    p.text-muted.small 
+                      strong Als 
+                      | staff member wil ik door grote lijsten kunnen navigeren met paginatie, 
+                      strong zodat 
+                      | de pagina snel laadt.
+                    
+                  .user-story.mb-0
+                    .badge.bg-info.rounded-pill.mb-2 US-018
+                    h6.fw-bold Feedback Systeem
+                    p.text-muted.small 
+                      strong Als 
+                      | staff member wil ik visuele feedback krijgen (toasts, confirmaties) bij acties, 
+                      strong zodat 
+                      | ik weet dat ze geslaagd zijn.
+
+        .card.shadow-sm.border-0.mb-5
+          .card-header.bg-dark.text-white.text-center.py-3
+            h3.mb-0
+              i.bi.bi-code-slash.me-2
+              | Technische Implementatie
+          .card-body.p-4
+            .row
+              .col-md-4.mb-3
+                h6.text-dark.mb-3
+                  i.bi.bi-layers.me-2
+                  | MVC Architectuur
+                ul.list-unstyled.text-muted.small
+                  li
+                    i.bi.bi-arrow-right.text-primary.me-2
+                    strong.text-dark DAOs: 
+                    | Data access
+                  li
+                    i.bi.bi-arrow-right.text-primary.me-2
+                    strong.text-dark Services: 
+                    | logic
+                  li
+                    i.bi.bi-arrow-right.text-primary.me-2
+                    strong.text-dark Controllers: 
+                    | Request handling
+                  li
+                    i.bi.bi-arrow-right.text-primary.me-2
+                    strong.text-dark Views: 
+                    | Pug templates
+                    
+              .col-md-4.mb-3
+                h6.text-dark.mb-3
+                  i.bi.bi-database.me-2
+                  | Database & Security
+                ul.list-unstyled.text-muted.small
+                  li
+                    i.bi.bi-arrow-right.text-primary.me-2
+                    strong.text-dark MySQL2: 
+                    | Database connectie
+                  li
+                    i.bi.bi-arrow-right.text-primary.me-2
+                    strong.text-dark JOI: 
+                    | Input validatie
+                  li
+                    i.bi.bi-arrow-right.text-primary.me-2
+                    strong.text-dark Bcrypt: 
+                    | Wachtwoord hashing
+                  li
+                    i.bi.bi-arrow-right.text-primary.me-2
+                    strong.text-dark Sessions: 
+                    | Authenticatie
+                    
+              .col-md-4.mb-3
+                h6.text-dark.mb-3
+                  i.bi.bi-palette.me-2
+                  | Frontend & UX
+                ul.list-unstyled.text-muted.small
+                  li
+                    i.bi.bi-arrow-right.text-primary.me-2
+                    strong.text-dark Bootstrap 5: 
+                    | Responsive design
+                  li
+                    i.bi.bi-arrow-right.text-primary.me-2
+                    strong.text-dark Pug Templates: 
+                    | Server-side rendering
+                  li
+                    i.bi.bi-arrow-right.text-primary.me-2
+                    strong.text-dark Custom CSS: 
+                    | Mobile optimalisaties
+                  li
+                    i.bi.bi-arrow-right.text-primary.me-2
+                    strong.text-dark JavaScript
+
+        .card.shadow-sm.border-0.mb-5
+          .card-header.bg-primary.text-white.text-center.py-3
+            h3.mb-0
+              i.bi.bi-clipboard2-check.me-2
+              | Testplan
+          .card-body.p-4
+            .alert.alert-info.d-flex.align-items-center.mb-4
+              i.bi.bi-info-circle.fs-4.me-3
+              div
+                h6.mb-1.fw-bold Cypress E2E Testing
+                p.mb-0.small Dit project bevat 28 geautomatiseerde tests die alle belangrijke functionaliteiten valideren via Cypress end-to-end testing.
+
+            .row
+              .col-lg-6.mb-4
+                .card.border-success.h-100
+                  .card-header.bg-success.text-white
+                    h5.mb-0
+                      i.bi.bi-shield-check.me-2
+                      | Authentication Tests (7 tests)
+                  .card-body
+                    h6.text-success.mb-3
+                      i.bi.bi-target.me-2
+                      | Test Scope
+                    ul.list-unstyled.mb-4
+                      li.mb-2
+                        i.bi.bi-check-circle.text-success.me-2
+                        strong Homepage Load: 
+                        span.text-muted.small Verificatie van correcte pagina-inhoud en navigatie
+                      li.mb-2
+                        i.bi.bi-check-circle.text-success.me-2
+                        strong Login Navigation: 
+                        span.text-muted.small Toegang tot login formulier en UI elementen
+                      li.mb-2
+                        i.bi.bi-check-circle.text-success.me-2
+                        strong Form Validation: 
+                        span.text-muted.small HTML5 validatie voor lege velden
+                      li.mb-2
+                        i.bi.bi-check-circle.text-success.me-2
+                        strong Invalid Credentials: 
+                        span.text-muted.small Afhandeling van onjuiste login gegevens
+                      li.mb-2
+                        i.bi.bi-check-circle.text-success.me-2
+                        strong Registration Flow: 
+                        span.text-muted.small Toegang tot en validatie van registratie
+                      li.mb-2
+                        i.bi.bi-check-circle.text-success.me-2
+                        strong Email Validation: 
+                        span.text-muted.small Controle op email format in formulieren
+                      li.mb-0
+                        i.bi.bi-check-circle.text-success.me-2
+                        strong Registration Handling: 
+                        span.text-muted.small Verwerking van nieuwe account aanvragen
+
+                    h6.text-success.mb-3.mt-4
+                      i.bi.bi-gear.me-2
+                      | Test Commands
+                    .bg-light.p-3.rounded
+                      code.small npm run cypress:run --spec "auth.cy.js"
+
+              .col-lg-6.mb-4
+                .card.border-warning.h-100
+                  .card-header.bg-warning.text-dark
+                    h5.mb-0
+                      i.bi.bi-laptop.me-2
+                      | Navigation & UI Tests (10 tests)
+                  .card-body
+                    h6.text-warning.mb-3
+                      i.bi.bi-target.me-2
+                      | Test Scope
+                    ul.list-unstyled.mb-4
+                      li.mb-2
+                        i.bi.bi-check-circle.text-warning.me-2
+                        strong Navigation Menu: 
+                        span.text-muted.small Verificatie van menu items en brand links
+                      li.mb-2
+                        i.bi.bi-check-circle.text-warning.me-2
+                        strong Page Navigation: 
+                        span.text-muted.small Correcte routing tussen pagina's
+                      li.mb-2
+                        i.bi.bi-check-circle.text-warning.me-2
+                        strong Active States: 
+                        span.text-muted.small Visual feedback voor huidige pagina
+                      li.mb-2
+                        i.bi.bi-check-circle.text-warning.me-2
+                        strong Mobile Responsive: 
+                        span.text-muted.small 375px viewport testing
+                      li.mb-2
+                        i.bi.bi-check-circle.text-warning.me-2
+                        strong Tablet Responsive: 
+                        span.text-muted.small 768px viewport testing
+                      li.mb-2
+                        i.bi.bi-check-circle.text-warning.me-2
+                        strong Mobile Menu: 
+                        span.text-muted.small Collapsible navigation functionaliteit
+                      li.mb-2
+                        i.bi.bi-check-circle.text-warning.me-2
+                        strong 404 Handling: 
+                        span.text-muted.small Graceful afhandeling van onbekende URL's
+                      li.mb-2
+                        i.bi.bi-check-circle.text-warning.me-2
+                        strong API Endpoints: 
+                        span.text-muted.small Status code validatie
+                      li.mb-2
+                        i.bi.bi-check-circle.text-warning.me-2
+                        strong Performance: 
+                        span.text-muted.small Laadtijd binnen 5 seconden
+                      li.mb-0
+                        i.bi.bi-check-circle.text-warning.me-2
+                        strong Page Elements: 
+                        span.text-muted.small Aanwezigheid van key UI componenten
+
+                    h6.text-warning.mb-3.mt-4
+                      i.bi.bi-gear.me-2
+                      | Test Commands
+                    .bg-light.p-3.rounded
+                      code.small npm run cypress:run --spec "navigation.cy.js"
+
+            .row
+              .col-lg-6.mb-4
+                .card.border-info.h-100
+                  .card-header.bg-info.text-white
+                    h5.mb-0
+                      i.bi.bi-people.me-2
+                      | Customer Management Tests (5 tests)
+                  .card-body
+                    h6.text-info.mb-3
+                      i.bi.bi-target.me-2
+                      | Test Scope
+                    ul.list-unstyled.mb-4
+                      li.mb-2
+                        i.bi.bi-check-circle.text-info.me-2
+                        strong Page Access: 
+                        span.text-muted.small Toegang tot customers pagina (met auth check)
+                      li.mb-2
+                        i.bi.bi-check-circle.text-info.me-2
+                        strong Search Function: 
+                        span.text-muted.small Zoeken naar klanten op naam
+                      li.mb-2
+                        i.bi.bi-check-circle.text-info.me-2
+                        strong Data Display: 
+                        span.text-muted.small Klanten lijst en card weergave
+                      li.mb-2
+                        i.bi.bi-check-circle.text-info.me-2
+                        strong Detail Navigation: 
+                        span.text-muted.small Links naar klant profielen
+                      li.mb-0
+                        i.bi.bi-check-circle.text-info.me-2
+                        strong Pagination: 
+                        span.text-muted.small Navigatie door grote datasets
+
+                    h6.text-info.mb-3.mt-4
+                      i.bi.bi-shield-check.me-2
+                      | Authentication Aware
+                    .alert.alert-light.small.mb-3
+                      i.bi.bi-info-circle.me-2
+                      | Tests hanteren fallbacks wanneer gebruiker niet ingelogd is.
+
+                    h6.text-info.mb-3
+                      i.bi.bi-gear.me-2
+                      | Test Commands
+                    .bg-light.p-3.rounded
+                      code.small npm run cypress:run --spec "customers.cy.js"
+
+              .col-lg-6.mb-4
+                .card.border-danger.h-100
+                  .card-header.bg-danger.text-white
+                    h5.mb-0
+                      i.bi.bi-film.me-2
+                      | Film Management Tests (6 tests)
+                  .card-body
+                    h6.text-danger.mb-3
+                      i.bi.bi-target.me-2
+                      | Test Scope
+                    ul.list-unstyled.mb-4
+                      li.mb-2
+                        i.bi.bi-check-circle.text-danger.me-2
+                        strong Page Access: 
+                        span.text-muted.small Toegang tot films pagina (met auth check)
+                      li.mb-2
+                        i.bi.bi-check-circle.text-danger.me-2
+                        strong Film Search: 
+                        span.text-muted.small Zoeken op filmtitel en eigenschappen
+                      li.mb-2
+                        i.bi.bi-check-circle.text-danger.me-2
+                        strong Catalog Display: 
+                        span.text-muted.small Film overzicht en grid weergave
+                      li.mb-2
+                        i.bi.bi-check-circle.text-danger.me-2
+                        strong Category Filter: 
+                        span.text-muted.small Filteren op film categorieën
+                      li.mb-2
+                        i.bi.bi-check-circle.text-danger.me-2
+                        strong Detail Navigation: 
+                        span.text-muted.small Links naar film detail pagina's
+                      li.mb-0
+                        i.bi.bi-check-circle.text-danger.me-2
+                        strong Empty Results: 
+                        span.text-muted.small Afhandeling van lege zoekresultaten
+
+                    h6.text-danger.mb-3.mt-4
+                      i.bi.bi-shield-check.me-2
+                      | Authentication Aware
+                    .alert.alert-light.small.mb-3
+                      i.bi.bi-info-circle.me-2
+                      | Tests valideren redirect naar login bij ongeautoriseerde toegang.
+
+                    h6.text-danger.mb-3
+                      i.bi.bi-gear.me-2
+                      | Test Commands
+                    .bg-light.p-3.rounded
+                      code.small npm run cypress:run --spec "films.cy.js"
+
+            .card.bg-light.border-0.mb-4
+              .card-body.p-4
+                h5.mb-4.text-center
+                  i.bi.bi-play-circle.me-2
+                  | Test Execution Commands
+                .row
+                  .col-md-6.mb-3
+                    h6.text-primary
+                      i.bi.bi-terminal.me-2
+                      | Run All Tests
+                    .bg-white.p-3.rounded.border
+                      code.text-dark npm run cy:run
+                    .small.text-muted.mt-2 Voert alle 28 tests uit in headless mode
+                  .col-md-6.mb-3
+                    h6.text-primary
+                      i.bi.bi-eye.me-2
+                      | Interactive Mode
+                    .bg-white.p-3.rounded.border
+                      code.text-dark npm run cy:open
+                    .small.text-muted.mt-2 Opent Cypress Test Runner voor visuele test uitvoering
+
+                  .col-md-6.mb-3
+                    h6.text-success
+                      i.bi.bi-chrome.me-2
+                      | Chrome Browser
+                    .bg-white.p-3.rounded.border
+                      code.text-dark npm run cy:run:chrome
+                    .small.text-muted.mt-2 Voert tests uit specifiek in Chrome browser
+                  .col-md-6.mb-3
+                    h6.text-warning
+                      i.bi.bi-firefox.me-2
+                      | Firefox Browser
+                    .bg-white.p-3.rounded.border
+                      code.text-dark npm run cy:run:firefox
+                    .small.text-muted.mt-2 Voert tests uit specifiek in Firefox browser
+
+            .alert.alert-success.d-flex.align-items-center
+              i.bi.bi-check-circle.fs-3.me-3
+              div
+                h6.mb-1.fw-bold Test Coverage: 100% Success Rate
+                p.mb-0.small Alle 28 geautomatiseerde tests slagen consistent. De test suite valideert authenticatie, navigatie, responsive design, en standaard functionaliteiten van het Sakila Film Verhuur systeem, al deze tests worden bij elke deployment ook uitgevoerd.
+
+        .text-center.mt-5.pt-4.border-top
+          p.text-muted.small
+            i.bi.bi-person-badge.me-2
+            | Koen Smit
+          .mt-3

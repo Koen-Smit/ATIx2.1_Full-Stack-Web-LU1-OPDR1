@@ -1,0 +1,130 @@
+extends layout
+
+mixin pagination(currentPage, totalPages, query)
+  if totalPages && totalPages > 1
+    nav(aria-label="Films paginering")
+      ul.pagination.justify-content-center
+        if currentPage > 1
+          li.page-item
+            a.page-link(href=`/films?page=1${query.search ? '&search=' + query.search : ''}#films-lijst`) 
+              i.bi.bi-chevron-double-left
+          li.page-item
+            a.page-link(href=`/films?page=${currentPage - 1}${query.search ? '&search=' + query.search : ''}#films-lijst`) Vorige
+        
+        - let startPage = Math.max(1, currentPage - 2)
+        - let endPage = Math.min(totalPages, currentPage + 2)
+        
+        - if (endPage - startPage < 4) {
+        -   if (startPage === 1) {
+        -     endPage = Math.min(totalPages, startPage + 4)
+        -   } else if (endPage === totalPages) {
+        -     startPage = Math.max(1, endPage - 4)
+        -   }
+        - }
+        
+        if startPage > 1
+          li.page-item.disabled
+            span.page-link ...
+        
+        - for (let i = startPage; i <= endPage; i++)
+          li.page-item(class=(i === currentPage ? 'active' : ''))
+            a.page-link(href=`/films?page=${i}${query.search ? '&search=' + query.search : ''}#films-lijst`) #{i}
+        
+        if endPage < totalPages
+          li.page-item.disabled
+            span.page-link ...
+        
+        if currentPage < totalPages
+          li.page-item
+            a.page-link(href=`/films?page=${currentPage + 1}${query.search ? '&search=' + query.search : ''}#films-lijst`) Volgende
+          li.page-item
+            a.page-link(href=`/films?page=${totalPages}${query.search ? '&search=' + query.search : ''}#films-lijst`)
+              i.bi.bi-chevron-double-right
+
+block content
+  .container.mt-4
+    if flash
+      .alert(class=`alert-${flash.type}` role="alert")
+        = flash.message
+    
+    .card.shadow-lg
+      .card-header.bg-primary.text-white.py-3
+        .row.align-items-center
+          .col-md-8
+            h1.h2.mb-0
+              i.bi.bi-film.me-2
+              | Films Beheer
+            .small.text-light #{totalFilms} films gevonden
+          .col-md-4.text-end
+            a.btn.btn-light.btn-sm(href="/customers")
+              i.bi.bi-people.me-1
+              | Naar Klanten
+
+      .card-body
+        .row.mb-4
+          .col-md-8
+            form.d-flex(action="/films", method="GET")
+              .input-group
+                span.input-group-text
+                  i.bi.bi-search
+                input.form-control(type="text", name="search", placeholder="Zoek op titel, beschrijving, jaar of film ID...", value=query.search || "")
+                button.btn.btn-outline-primary(type="submit") Zoeken
+          .col-md-4.text-end
+            if query.search
+              a.btn.btn-outline-secondary(href="/films")
+                i.bi.bi-x-circle.me-1
+                | Wis Zoekfilter
+
+        if films && films.length > 0
+          .row.g-3.mb-4
+            each film in films
+              .col-md-6.col-lg-4
+                .card.h-100.border-0.shadow-sm(class=film.rental_status === 'rented' ? 'border-danger' : 'border-success')
+                  .card-body
+                    .d-flex.justify-content-between.align-items-start.mb-3
+                      if film.rental_status === 'rented'
+                        .badge.bg-danger.rounded-pill Verhuurd
+                      else
+                        .badge.bg-success.rounded-pill Beschikbaar
+                      .small.text-muted Film ID: #{film.film_id}
+                    
+                    .text-center.mb-3
+                      h5.card-title.mb-1 #{film.title}
+                      .text-muted.small.mb-2
+                        if film.release_year
+                          i.bi.bi-calendar.me-1
+                          span #{film.release_year}
+                        if film.rating
+                          span.ms-2
+                            i.bi.bi-star.me-1
+                            span #{film.rating}
+                      if film.description
+                        .text-muted.small #{film.description.substring(0, 60)}...
+                    
+                    if film.rental_status === 'rented' && film.customer_first_name
+                      .text-center.small.mb-2
+                        .text-muted Verhuurd aan:
+                        a.text-decoration-none(href=`/customers/${film.customer_id}`)
+                          i.bi.bi-person.me-1
+                          strong #{film.customer_first_name} #{film.customer_last_name}
+                        if film.rental_date
+                          .text-muted.small.mt-1 sinds #{new Date(film.rental_date).toLocaleDateString('nl-NL')}
+                    
+                    .d-flex.justify-content-between.align-items-center.mt-auto.pt-2
+                      if film.replacement_cost
+                        .small.text-muted €#{parseFloat(film.replacement_cost).toFixed(2)}
+                      if film.rental_status === 'available'
+                        a.btn.btn-sm.btn-outline-primary(href=`/films/${film.film_id}`)
+                          i.bi.bi-eye.me-1
+                          | Details
+
+          +pagination(currentPage, totalPages, query)
+        else
+          .p-4.text-center.text-muted
+            i.bi.bi-film.display-1.mb-3.text-light
+            h5 Geen films gevonden
+            if query.search
+              p Probeer een andere zoekterm
+              a.btn.btn-outline-primary(href="/films") Alle films tonen
+            else
+              p Er zijn geen films beschikbaar

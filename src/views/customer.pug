@@ -1,46 +1,182 @@
 extends layout
 
-block content
-  a.btn.btn-secondary.mb-3(href="/")
-    i.bi.bi-arrow-left-circle.me-2
-    | Home
-  .container.mt-5
-    .card.shadow-lg
-      .card-header.d-flex.justify-content-between.align-items-center
-        h1.h1.mb-0 Customers
+mixin pagination(currentPage, totalPages, query)
+  if totalPages && totalPages > 1
+    nav(aria-label="Klanten paginering")
+      ul.pagination.justify-content-center
+        if currentPage > 1
+          li.page-item
+            a.page-link(href=`/customers?page=1${query.search ? '&search=' + query.search : ''}#klanten-lijst`) 
+              i.bi.bi-chevron-double-left
+          li.page-item
+            a.page-link(href=`/customers?page=${currentPage - 1}${query.search ? '&search=' + query.search : ''}#klanten-lijst`) Vorige
+        
+        - let startPage = Math.max(1, currentPage - 2)
+        - let endPage = Math.min(totalPages, currentPage + 2)
+        
+        - if (endPage - startPage < 4) {
+        -   if (startPage === 1) {
+        -     endPage = Math.min(totalPages, startPage + 4)
+        -   } else if (endPage === totalPages) {
+        -     startPage = Math.max(1, endPage - 4)
+        -   }
+        - }
+        
+        if startPage > 1
+          li.page-item.disabled
+            span.page-link ...
+        
+        - for (let i = startPage; i <= endPage; i++)
+          li.page-item(class=(i === currentPage ? 'active' : ''))
+            a.page-link(href=`/customers?page=${i}${query.search ? '&search=' + query.search : ''}#klanten-lijst`) #{i}
+        
+        if endPage < totalPages
+          li.page-item.disabled
+            span.page-link ...
+        
+        if currentPage < totalPages
+          li.page-item
+            a.page-link(href=`/customers?page=${currentPage + 1}${query.search ? '&search=' + query.search : ''}#klanten-lijst`) Volgende
+          li.page-item
+            a.page-link(href=`/customers?page=${totalPages}${query.search ? '&search=' + query.search : ''}#klanten-lijst`)
+              i.bi.bi-chevron-double-right
 
-        form.d-flex(action="/customers", method="POST")
-          input.form-control.me-2(type="text", name="first_name", placeholder="First name", required)
-          input.form-control.me-2(type="text", name="last_name", placeholder="Last name", required)
-          button.btn.btn-success(type="submit")
-            i.bi.bi-plus-circle.me-1
-            | Add
+mixin paginationCompact(currentPage, totalPages, query)
+  if totalPages && totalPages > 1
+    nav(aria-label="Klanten paginering compact")
+      ul.pagination.pagination-sm.justify-content-center.mb-0
+        if currentPage > 1
+          li.page-item
+            a.page-link(href=`/customers?page=${currentPage - 1}${query.search ? '&search=' + query.search : ''}`)
+              i.bi.bi-chevron-left
+        
+        - let startPage = Math.max(1, currentPage - 1)
+        - let endPage = Math.min(totalPages, currentPage + 1)
+        
+        if startPage > 1 && startPage > 2
+          li.page-item
+            a.page-link(href=`/customers?page=1${query.search ? '&search=' + query.search : ''}`) 1
+          li.page-item.disabled
+            span.page-link ...
+        
+        - for (let i = startPage; i <= endPage; i++)
+          li.page-item(class=(i === currentPage ? 'active' : ''))
+            a.page-link(href=`/customers?page=${i}${query.search ? '&search=' + query.search : ''}`) #{i}
+        
+        if endPage < totalPages && endPage < totalPages - 1
+          li.page-item.disabled
+            span.page-link ...
+          li.page-item
+            a.page-link(href=`/customers?page=${totalPages}${query.search ? '&search=' + query.search : ''}`) #{totalPages}
+        
+        if currentPage < totalPages
+          li.page-item
+            a.page-link(href=`/customers?page=${currentPage + 1}${query.search ? '&search=' + query.search : ''}`)
+              i.bi.bi-chevron-right
+
+block content
+  .container.mt-4
+    .card.shadow-lg
+      .card-header.bg-primary.text-white.py-3
+        .row.align-items-center
+          .col-md-8
+            h1.h2.mb-0
+              i.bi.bi-people.me-2
+              | Klanten Beheer
+          .col-md-4.text-end
+            button.btn.btn-success(type="button" data-bs-toggle="modal" data-bs-target="#addCustomerModal")
+              i.bi.bi-plus-circle.me-1
+              | Nieuwe Klant
 
       .card-body
-        if customers.length
-          table.table.table-striped.table-hover.align-middle
-            thead.table-dark
-              tr
-                th #
-                th First Name
-                th Last Name
-                th Actions
-            tbody
-              each customer, i in customers
-                tr
-                  th(scope="row") #{i + 1}
+        .row.mb-4
+          .col-md-8
+            form.d-flex(action="/customers", method="GET")
+              .input-group
+                span.input-group-text
+                  i.bi.bi-search
+                input.form-control(type="text", name="search", placeholder="Zoeken op naam, klant ID of email...", value=query.search || "")
+                button.btn.btn-outline-primary(type="submit") Zoeken
+          .col-md-4.text-end
+            if query.search
+              a.btn.btn-outline-secondary(href="/customers")
+                i.bi.bi-x-circle.me-1
+                | Wis Zoekfilter
 
-                  form(action=`/customers/${customer.customer_id}/update`, method="POST", class="d-flex gap-2 w-100")
-                    td
-                      input.form-control.form-control-sm(type="text", name="first_name", value=customer.first_name, required)
-                    td
-                      input.form-control.form-control-sm(type="text", name="last_name", value=customer.last_name, required)
-                    td
-                      button.btn.btn-sm.btn-warning(type="submit" title="Update")
-                        i.bi.bi-pencil-square
-                  td
-                    form(action=`/customers/${customer.customer_id}/delete`, method="POST", style="display:inline")
-                      button.btn.btn-sm.btn-danger(type="submit" title="Delete")
-                        i.bi.bi-trash
+
+        if customers.length
+          .row.g-3.mb-4
+            each customer in customers
+              .col-md-6.col-lg-4
+                .card.h-100.border-0.shadow-sm
+                  .card-body
+                    .d-flex.justify-content-between.align-items-start.mb-3
+                      .badge.bg-primary.rounded-pill Klant ID: #{customer.customer_id}
+                      a.btn.btn-outline-secondary.btn-sm(href=`/customers/${customer.customer_id}/profile` title="Bekijk Klantprofiel")
+                        i.bi.bi-three-dots-vertical
+                    
+                    .text-center.mb-3
+                      h5.card-title.mb-1 #{customer.first_name} #{customer.last_name}
+                      .text-muted.small.mb-2
+                        i.bi.bi-person-badge.me-1
+                        | Klant ID: #{customer.customer_id}
+                      if customer.email
+                        .text-muted.small
+                          i.bi.bi-envelope.me-1
+                          | #{customer.email}
+                      else
+                        .text-muted.small
+                          i.bi.bi-envelope-x.me-1
+                          | Geen email
+                    
+                    .text-center.small.text-muted
+                      i.bi.bi-calendar-plus.me-1
+                      | Toegevoegd: #{new Date(customer.create_date).toLocaleDateString('nl-NL')}
+
+          +pagination(currentPage, totalPages, query)
         else
-          .alert.alert-warning.text-center No customers found.
+          .alert.alert-warning.text-center
+            i.bi.bi-exclamation-triangle.me-2
+            if query.search
+              | Geen klanten gevonden die overeenkomen met "#{query.search}". 
+              a(href="/customers") Bekijk alle klanten.
+            else
+              | Nog geen klanten toegevoegd.
+
+  .modal.fade(id="addCustomerModal" tabindex="-1" aria-labelledby="addCustomerModalLabel" aria-hidden="true")
+    .modal-dialog.modal-lg
+      .modal-content
+        .modal-header.bg-success.text-white
+          h5.modal-title(id="addCustomerModalLabel")
+            i.bi.bi-person-plus.me-2
+            | Nieuwe Klant Toevoegen
+          button.btn-close.btn-close-white(type="button" data-bs-dismiss="modal" aria-label="Sluiten")
+        .modal-body
+          form(id="addCustomerForm" action="/customers", method="POST")
+            .row
+              .col-md-6.mb-3
+                label.form-label(for="first_name") Voornaam *
+                input.form-control(type="text", id="first_name", name="first_name", required, placeholder="Voornaam")
+              .col-md-6.mb-3
+                label.form-label(for="last_name") Achternaam *
+                input.form-control(type="text", id="last_name", name="last_name", required, placeholder="Achternaam")
+            .mb-3
+              label.form-label(for="email") Email (optioneel)
+              input.form-control(type="email", id="email", name="email", placeholder="klant@email.com")
+            .row
+              .col-md-6.mb-3
+                label.form-label(for="create_date") Aanmaak datum
+                input.form-control(type="datetime-local", id="create_date", name="create_date", value=new Date().toISOString().slice(0, 16))
+              .col-md-6.mb-3
+                label.form-label(for="active") Status
+                select.form-select(id="active", name="active")
+                  option(value="1" selected) Actief
+                  option(value="0") Inactief
+            .alert.alert-info.small
+              i.bi.bi-info-circle.me-2
+              | De klant wordt automatisch gekoppeld aan jouw winkel locatie.
+        .modal-footer
+          button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Annuleren
+          button.btn.btn-success(type="submit" form="addCustomerForm")
+            i.bi.bi-check-circle.me-1
+            | Klant Toevoegen
