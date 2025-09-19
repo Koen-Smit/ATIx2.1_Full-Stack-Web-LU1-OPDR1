@@ -3,11 +3,17 @@ const { defineConfig } = require("cypress");
 module.exports = defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
+      // Enable video recording in CI environments
+      if (process.env.CI) {
+        config.video = true;
+        config.videoCompression = 32;
+      }
+      return config;
     },
     baseUrl: 'http://localhost:3000',
     viewportWidth: 1280,
     viewportHeight: 720,
-    video: false,
+    video: false, // Disabled locally, enabled in CI via setupNodeEvents
     screenshotOnRunFailure: true,
     defaultCommandTimeout: 10000,
     requestTimeout: 10000,
