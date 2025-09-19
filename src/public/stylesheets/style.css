@@ -1,8 +1,131 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+:root {
+  --custom-lighter: #F0F0F0;
+  --bs-body-bg: #F0F0F0;
 }
 
-a {
-  color: #00B7FF;
+body {
+  margin: 0;
+  padding: 0;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: var(--custom-lighter) !important;
+}
+
+.navbar {
+  min-height: 70px !important;
+}
+
+.profile-avatar-large {
+  width: 80px !important;
+  height: 80px !important;
+}
+
+.profile-avatar-medium {
+  width: 60px !important;
+  height: 60px !important;
+}
+
+.profile-avatar-small {
+  width: 40px !important;
+  height: 40px !important;
+  flex-shrink: 0 !important;
+}
+
+.card-header-centered {
+  text-align: center !important;
+  padding: 1rem !important;
+}
+
+.form-inline-display {
+  display: inline !important;
+}
+
+.toast-container-top {
+  z-index: 1100 !important;
+}
+
+.customer-edit-hidden {
+  display: none !important;
+}
+
+.table-col-payment {
+  min-width: 130px !important;
+}
+
+.film-card {
+  background-color: #E8E8E8 !important;
+  border-radius: 12px !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.film-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 15px rgba(150, 167, 141, 0.2) !important;
+}
+
+.customer-card {
+  background-color: #E8E8E8 !important;
+  border-radius: 12px !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.customer-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 15px rgba(150, 167, 141, 0.2) !important;
+}
+
+@media (max-width: 575.98px) {
+  .table-responsive-stack th,
+  .table-responsive-stack td {
+    display: block !important;
+    width: 100% !important;
+    padding: 0.5rem !important;
+    border: none !important;
+    border-bottom: 1px solid #dee2e6 !important;
+  }
+  
+  .table-responsive-stack thead {
+    display: none !important;
+  }
+  
+  .table-responsive-stack tr {
+    display: block !important;
+    border: 1px solid #dee2e6 !important;
+    margin-bottom: 1rem !important;
+    border-radius: 0.5rem !important;
+    background: white !important;
+  }
+  
+  .navbar-brand {
+    font-size: 1rem !important;
+  }
+  
+  .btn-sm-mobile {
+    font-size: 0.75rem !important;
+    padding: 0.25rem 0.5rem !important;
+  }
+  
+  .card-body-mobile {
+    padding: 1rem !important;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .search-form-mobile {
+    margin-bottom: 1rem !important;
+  }
+  
+  .pagination-mobile {
+    justify-content: center !important;
+  }
+  
+  .pagination-mobile .page-item {
+    margin: 0 0.1rem !important;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .container-fluid-tablet {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
 }
