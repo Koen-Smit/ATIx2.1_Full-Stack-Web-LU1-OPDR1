@@ -8,7 +8,27 @@ function errorHandler(err, req, res, next) {
   // Log error
   logger.error({ label: 'ERROR', message: err.stack || err.message });
 
-  // Get page to redirect back to
+  // 404, redirect to home page instead of the non-existent page
+  if (err.status === 404) {
+    if (req.accepts('html')) {
+      if (req.xhr || req.headers.accept?.includes('application/json')) {
+        return res.status(404).json({ 
+          error: err.message,
+          redirect: '/' 
+        });
+      }
+      
+      return res.status(404).redirect(`/?error=${encodeURIComponent(err.message)}`);
+    }
+    
+    if (req.accepts('json')) {
+      return res.status(404).json({ error: err.message });
+    }
+    
+    return res.status(404).send(err.message || 'Page not found');
+  }
+
+  // For other errors, get page to redirect back to
   const referrer = req.get('Referer');
   let redirectUrl = '/';
   
