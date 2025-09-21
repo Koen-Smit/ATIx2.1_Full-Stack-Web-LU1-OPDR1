@@ -2,6 +2,8 @@
 - (02-09-2025 / 21-09-2025)
 - Node.js, Express.js, MySQL, Bootstrap 5, Pug, Cypress, Azure
 
+_**Voor docenten**: de .ENV file in de ZIP bevat "SECRET_KEY", deze invullen na het maken van een account geeft toegang tot alles. Dit om te simuleren dat een admin "toestemming" geeft tot de werknemer bij data kan, deze oplossing is zo gedaan omdat we maar 1 viewpoint moesten verwerken._
+
 ## Project Overview
 Dit is het eerste project in periode 1 van jaar 2 van mijn Informatica-opleiding. Het project richt zich op full-stack webdevelopment. De focus in dit project ligt op de **staff viewpoint** van een filmverhuur systeem.
 
@@ -18,7 +20,7 @@ Staff members hebben toegang tot klantbeheer, film catalogus, verhuur administra
 - **Deployment**: Azure Web App met CI/CD pipeline
 
 Preview:
-*[GIF]*
+![Demo](documentation/video-gif/1.gif)
 
 ## Beveiliging
 Beveiliging is een kernonderdeel van dit project:
@@ -69,7 +71,7 @@ src/
 - **Registratie**: Account aanmaken met validatie en bcrypt hashing
 - **Profiel**: Persoonlijke gegevens beheren en account activatie
 
-*[GIF]*
+![Demo](documentation/video-gif/1.gif)
 
 **3. Klanten Management**
 - **Overzicht**: Gepagineerde lijst met alle klanten
@@ -77,7 +79,7 @@ src/
 - **Detail**: Volledig klantprofiel met verhuurgeschiedenis
 - **Bewerken**: CRUD operaties met form validatie
 
-*[GIF]*
+![Demo](documentation/video-gif/2.gif)
 
 **4. Films Catalogus**
 - **Overzicht**: Film grid met beschikbaarheidsstatus
@@ -85,7 +87,7 @@ src/
 - **Detail**: Gedetailleerde film informatie
 - **Verhuur**: Nieuwe verhuur kunnen starten
 
-*[GIF]*
+![Demo](documentation/video-gif/3.gif)
 
 ---
 
