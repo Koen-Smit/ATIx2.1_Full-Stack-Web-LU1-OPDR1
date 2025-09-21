@@ -1,10 +1,10 @@
-const logger = require('./logger');
-
 /**
  * Middleware to check if user account is active
  * Redirects inactive users to profile page with error message
  * Always allows access to home, profile.
- */
+*/
+const logger = require('./logger');
+
 const checkActiveStatus = (req, res, next) => {
     if (!req.session.user) {
         return next();
