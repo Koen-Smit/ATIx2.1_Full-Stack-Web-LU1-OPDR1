@@ -73,6 +73,47 @@ body {
   box-shadow: 0 4px 15px rgba(150, 167, 141, 0.2) !important;
 }
 
+.wireframe-card {
+  background-color: #FFFFFF !important;
+  border-radius: 12px !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+  overflow: hidden !important;
+}
+
+.wireframe-card:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.wireframe-card img {
+  transition: transform 0.3s ease !important;
+  border-bottom: 1px solid #e9ecef !important;
+}
+
+.wireframe-card:hover img {
+  transform: scale(1.05) !important;
+}
+
+.wireframe-card .card-header {
+  border-bottom: 2px solid #e9ecef !important;
+  font-weight: 600 !important;
+}
+
+.wireframe-card .card-footer {
+  border-top: 1px solid #e9ecef !important;
+}
+
+.wireframe-image-thumbnail {
+  height: 300px !important;
+  object-fit: cover !important;
+  cursor: pointer !important;
+}
+
+.modal-image-fullsize {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
 @media (max-width: 575.98px) {
   .table-responsive-stack th,
   .table-responsive-stack td {
